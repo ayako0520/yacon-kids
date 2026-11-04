@@ -1,1 +1,79 @@
-# yacon-kids
+# ヤーコンたんけん隊！（試作）
+
+日本ヤーコン協会の子ども向けページの**試作**です。
+要件定義書（`docs/requirements.md` v1.1）の **B案（静的な HTML・CSS・JavaScript）** で作っています。
+協会に見せて、仕様を確認するためのものです。公開用ではありません。
+
+- 文章・問題・解説はすべて仮の原稿です。「【要監修】」の印を付けています。
+- 画像は1点も使っていません。図版はすべて「図版の予定：〇〇」の仮枠です（理由は `docs/open-questions.md`）。
+- 外部の画像・フォント・スクリプト、Cookie、ローカルストレージ、アクセス解析、外部への通信はありません。
+
+## 見方
+
+### いちばん簡単な方法
+
+`site/index.html` をブラウザ（Chrome・Edge・Firefox・Safari）にドラッグ＆ドロップするか、ダブルクリックで開きます。
+問題データは HTML に埋め込んでいるので、`file://` のままでもクイズが動きます。
+
+### ローカルサーバーで開く場合（スマホ実機で見たいときなど）
+
+```bash
+cd site && python3 -m http.server 8000
+```
+
+ブラウザで `http://localhost:8000/` を開きます。
+
+### JavaScript が動かないときの表示を見る
+
+ブラウザの開発者ツールで JavaScript を無効にして再読み込みします。
+クイズの欄が「全問題＋折りたたみの正解・解説」に切り替わります。
+
+## ファイル構成
+
+```
+site/
+  index.html       … ページ本体（8セクションの縦長1ページ）
+  styles.css       … 見た目（モバイル優先、外部フォントなし）
+  quiz.js          … クイズの動き（第4章 4.2）
+  quiz-data.json   … クイズの問題データ（原稿。ここを編集する）
+tools/
+  build.mjs        … quiz-data.json を検証し、index.html に反映するスクリプト
+docs/
+  requirements.md  … 要件定義書 v1.1
+  assets.md        … 素材台帳
+  checklist.md     … 受入基準 AC01〜AC14 と試作の対応表
+  open-questions.md… 試作を作って新たに分かった確認事項
+```
+
+## クイズの問題を変えるとき
+
+1. `site/quiz-data.json` を編集します（3〜5問。ふりがなは `{漢字|よみ}` と書く）。
+2. 次のコマンドで `index.html` に反映します（Node.js 18 以上）。
+
+```bash
+node tools/build.mjs
+```
+
+3. 反映し忘れがないかは、次で確かめられます。
+
+```bash
+node tools/build.mjs --check
+```
+
+`build.mjs` は、問題数（3〜5問）、正解IDが選択肢にあるか、復習先の章がページにあるか、などを検証します。
+問題データは、JavaScript 用（埋め込みJSON）と、JavaScript が動かないとき用（静的HTML）の両方に反映されます。
+`draft` が `true` の間は、問題文と解説の末尾に「【要監修】」が自動で付きます。監修後に `false` にします。
+
+## 要件定義書との対応
+
+| 要件定義書 | 試作での対応 | 場所 |
+| --- | --- | --- |
+| 第2章 8セクション | `intro`・`plant`・`origin`・`grow`・`eat`・`nutrients`・`quiz`・`adults` を1ページに配置。目次、各章から目次へ戻るリンク、クイズ解説から該当章へのリンクあり | `site/index.html` |
+| 第3章 文章と表記 | です・ます調、1文40字以内（自動チェック済み）。専門語と、小3以降に習う漢字の一部に `ruby` でふりがな（漢字の学年配当による全数点検は未実施）。根拠のない数値・断定は書かず、すべてに【要監修】 | `site/index.html`、`site/quiz-data.json` |
+| 第4章 クイズ | 4問・各3択、ラジオボタン＋ラベル、未選択時の案内、正誤・正解・解説・該当章リンク、つぎへ、結果と復習案内、もういちど。成績は保存しない。JS無効時の代替表示あり | `site/quiz.js`、`site/quiz-data.json`、`tools/build.mjs` |
+| 第5章 素材の権利 | 台帳が空欄・素材ファイルなしのため画像は未使用。クレジット表示欄を「おうちの方と先生へ」とページ下部に用意 | `site/index.html`、`docs/checklist.md`（AC06） |
+| 第6章 栄養表現 | 成分の紹介と「量は条件で変わる」のみ。数値・強調・効能の表現なし | `site/index.html` の `nutrients` |
+| 第7章 N01〜N10 | 320〜1280px で横スクロールなし、本文18px、操作44px以上、コントラスト4.5:1以上、キーボード操作、フォーカス表示、本文スキップ、結果通知、色以外の正誤表示、`prefers-reduced-motion` | `site/styles.css`、`site/quiz.js` |
+| 第8章 SEO | `lang="ja"`、H1は1つ、見出し順序、タイトル案、説明文、`noindex`。canonical・OGP は未設定（理由はコメント参照） | `site/index.html` の `<head>` |
+| 第11章 受入基準 | 対応状況を表にまとめた | `docs/checklist.md` |
+| 第13章 未確定事項 | 試作で新たに分かった質問 | `docs/open-questions.md` |
