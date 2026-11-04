@@ -31,8 +31,10 @@
   --placeholder-text: #4a4239;
 
   /* ---- 文字 ---- */
-  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
-  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+  /* 日本語フォントを必ず先に並べる。名前が無いと、端末によっては中国語用フォントが選ばれ、
+     「植」「図」「版」などの字形が日本のものと違って見える */
+  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Source Han Sans JP", "IPAexGothic", "IPAPGothic", "IPAGothic", sans-serif;
+  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", "Noto Serif CJK JP", "Source Han Serif JP", "IPAexMincho", "IPAPMincho", "IPAMincho", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "IPAexGothic", "IPAPGothic", serif; /* 日本語の明朝体が無い端末では、中国語フォントより日本語のゴシック体を優先する */
 
   /* ---- 余白 ---- */
   --section-gap: 5rem;      /* 18px × 5 = 90px（80px 以上） */
