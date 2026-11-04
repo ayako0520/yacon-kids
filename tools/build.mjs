@@ -1,18 +1,36 @@
-// クイズの問題データ（site/quiz-data.json）を検証し、site/index.html に反映するスクリプト。
+// クイズの問題データ（quiz-data.json）を検証し、同じフォルダの index.html に反映するスクリプト。
+// 案ごとにフォルダが分かれている（site-ochitsuki/ 落ち着いた案、site-nigiyaka/ にぎやか案）。
 // 使い方：
-//   node tools/build.mjs          … index.html を更新する
-//   node tools/build.mjs --check  … index.html が JSON と一致しているかだけ確かめる（不一致なら終了コード1）
+//   node tools/build.mjs                       … すべての案のフォルダを更新する
+//   node tools/build.mjs site-nigiyaka         … 指定した案のフォルダだけ更新する
+//   node tools/build.mjs --check               … index.html が JSON と一致しているかだけ確かめる（不一致なら終了コード1）
 // 外部パッケージは使わない（Node.js 18 以上）。
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const dataPath = join(root, 'site', 'quiz-data.json');
-const htmlPath = join(root, 'site', 'index.html');
 const checkOnly = process.argv.includes('--check');
+const ALL_SITES = ['site-ochitsuki', 'site-nigiyaka'];
+const named = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+const sites = named.length ? named : ALL_SITES;
 
+let failed = false;
+for (const site of sites) {
+  if (!existsSync(join(root, site, 'quiz-data.json'))) {
+    console.error(`${site}：quiz-data.json がありません（フォルダ名を確認してください）`);
+    failed = true;
+    continue;
+  }
+  if (!buildSite(site)) failed = true;
+}
+process.exit(failed ? 1 : 0);
+
+// ---- 1つの案のフォルダを処理する。成功なら true ----
+function buildSite(site) {
+const dataPath = join(root, site, 'quiz-data.json');
+const htmlPath = join(root, site, 'index.html');
 const DRAFT_MARK = '【要監修】';
 
 // ---- 1. 問題データの検証 ----
@@ -47,8 +65,8 @@ if (/\{[^}|]*$/.test(allText) || (allText.match(/\{/g) || []).length !== (allTex
   errors.push('ふりがな記法 {漢字|よみ} の括弧が閉じていない所があります');
 }
 if (errors.length) {
-  console.error('問題データにエラーがあります：\n- ' + errors.join('\n- '));
-  process.exit(1);
+  console.error(`${site}：問題データにエラーがあります：\n- ` + errors.join('\n- '));
+  return false;
 }
 
 // ---- 2. HTML の生成 ----
@@ -103,11 +121,13 @@ const out = replaceBlock(replaceBlock(htmlSrc, 'QUIZ-STATIC', staticHtml), 'QUIZ
 
 if (checkOnly) {
   if (out !== htmlSrc) {
-    console.error('index.html が quiz-data.json と一致していません。node tools/build.mjs を実行してください。');
-    process.exit(1);
+    console.error(`${site}：index.html が quiz-data.json と一致していません。node tools/build.mjs ${site} を実行してください。`);
+    return false;
   }
-  console.log(`OK：${total} 問。index.html は quiz-data.json と一致しています。`);
+  console.log(`${site}：OK（${total} 問）。index.html は quiz-data.json と一致しています。`);
 } else {
   writeFileSync(htmlPath, out);
-  console.log(`index.html を更新しました（${total} 問）。`);
+  console.log(`${site}：index.html を更新しました（${total} 問）。`);
+}
+return true;
 }

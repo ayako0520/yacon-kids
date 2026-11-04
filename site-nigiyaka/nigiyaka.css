@@ -1,0 +1,521 @@
+/* ヤーコンたんけん隊！ にぎやか案（試作）
+   styles.css の上に重ねて読み込み、見た目だけを変える（文章・クイズは同じ）。
+   方向性：明るい空色、多色の題名、白い縁取り、立体的な丸いボタン、吹き出し。
+   画像は使わず、空・雲・丘・太陽は CSS の図形で描く（装飾なので読み上げない）。
+   どのセレクタにも .theme-nigiyaka を付けて、styles.css より確実に優先させる。 */
+
+.theme-nigiyaka {
+  /* ---- 色（すべて背景との組み合わせでコントラストを確認済み） ---- */
+  --bg: #f5faff;             /* ページの背景：うすい空色 */
+  --sky-top: #bfe6ff;        /* 空の上のほう */
+  --sky: #eaf6ff;            /* 空の下のほう */
+  --meadow: #d9f5e6;         /* 野原（もくじの帯） */
+  --meadow-dark: #9fdcbc;
+  --blue: #1565c0;           /* 空色の背景で 5.2:1 */
+  --orange: #d35400;         /* 大きな文字のみ（空色で 3.8:1） */
+  --green: #12884a;          /* 白で 4.5:1 */
+  --pink: #c2185b;           /* 白で 5.9:1 */
+  --purple: #7b3fb5;         /* 白で 6.5:1 */
+  --yellow: #ffb300;         /* 主ボタンの面。文字は濃いチャコール（7.9:1） */
+  --yellow-shadow: #c98a00;
+  --primary: var(--green);
+  --navy: var(--blue);
+  --cta: var(--yellow);
+  --cta-dark: #e09e00;
+  --border: #d6e9f5;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --font-sans: "Zen Maru Gothic", "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Source Han Sans JP", "IPAexGothic", "IPAPGothic", "IPAGothic", sans-serif;
+  --font-serif: var(--font-sans); /* にぎやか案は丸ゴシックで統一する */
+  font-family: var(--font-sans);
+  background: var(--bg);
+}
+
+/* ---- 試作の帯 ---- */
+.theme-nigiyaka .proto-banner {
+  background: #fff8e1;
+  border-bottom: 3px solid var(--yellow);
+}
+
+/* ---- 空（ヒーロー） ---- */
+.theme-nigiyaka .site-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(var(--sky-top), var(--sky) 75%);
+}
+
+/* 雲：白いだ円を重ねた図形 */
+.theme-nigiyaka .site-header::before,
+.theme-nigiyaka .site-header::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 220px;
+  height: 70px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 40px -28px 0 -6px #fff, 100px -12px 0 4px #fff;
+  opacity: 0.9;
+}
+
+.theme-nigiyaka .site-header::before {
+  top: 48px;
+  left: -60px;
+}
+
+.theme-nigiyaka .site-header::after {
+  top: 120px;
+  right: -40px;
+  transform: scale(0.8);
+}
+
+.theme-nigiyaka .hero {
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+
+/* 太陽：右上の丸 */
+.theme-nigiyaka .hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 1.5rem;
+  right: 1rem;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: #ffd54f;
+  box-shadow: 0 0 0 12px rgba(255, 213, 79, 0.35), 0 0 0 26px rgba(255, 213, 79, 0.18);
+}
+
+/* 会の名前：ピンクのリボン */
+.theme-nigiyaka .org-name {
+  display: inline-block;
+  padding: 0.15rem 1rem;
+  border-radius: 8px;
+  background: var(--pink);
+  color: #fff;
+  letter-spacing: 0.08em;
+  transform: rotate(-2deg);
+}
+
+/* 題名：1文字ずつ色を変え、白い縁取りをつける */
+.theme-nigiyaka h1 {
+  font-size: clamp(2.6rem, 11vw, 4.6rem);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 0.14em #fff;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 4px 0 rgba(21, 101, 192, 0.18));
+}
+
+.theme-nigiyaka h1 rt {
+  -webkit-text-stroke: 0;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.theme-nigiyaka .c1 { color: var(--blue); }
+.theme-nigiyaka .c2 { color: var(--orange); }
+.theme-nigiyaka .c3 { color: var(--green); }
+.theme-nigiyaka .c4 { color: var(--pink); }
+.theme-nigiyaka .c5 { color: var(--purple); }
+
+/* 呼びかけの一文：白い吹き出し */
+.theme-nigiyaka .tagline {
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border: 3px solid var(--blue);
+  border-radius: var(--radius);
+  background: #fff;
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.theme-nigiyaka .tagline::after {
+  content: "";
+  position: absolute;
+  left: 2rem;
+  bottom: -14px;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-right: 3px solid var(--blue);
+  border-bottom: 3px solid var(--blue);
+  transform: rotate(45deg);
+}
+
+/* ---- ボタン：丸くて立体的 ---- */
+.theme-nigiyaka .button {
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--text);
+  box-shadow: 0 5px 0 var(--yellow-shadow);
+  padding: 0.5rem 2rem;
+}
+
+.theme-nigiyaka .button:hover {
+  background: #ffc233;
+  color: var(--text);
+}
+
+.theme-nigiyaka .button:active {
+  box-shadow: 0 2px 0 var(--yellow-shadow);
+  transform: translateY(3px);
+}
+
+/* ---- 図版の仮枠：空色の点線 ---- */
+.theme-nigiyaka .placeholder {
+  background: #fff;
+  border: 3px dashed #7fb8e6;
+  border-radius: var(--radius);
+  color: #1f3654;
+}
+
+.theme-nigiyaka .hero-figure .placeholder {
+  box-shadow: 0 8px 0 rgba(21, 101, 192, 0.12);
+}
+
+/* ---- 野原（もくじ） ---- */
+.theme-nigiyaka .ground {
+  position: relative;
+  background: var(--meadow);
+  color: var(--text);
+  border-top: 0;
+  padding-top: 3rem;
+}
+
+/* 丘：野原の上のふくらみ */
+.theme-nigiyaka .ground::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -70px;
+  height: 72px;
+  background:
+    radial-gradient(38% 100% at 18% 100%, var(--meadow) 99%, transparent 100%),
+    radial-gradient(30% 75% at 52% 100%, var(--meadow) 99%, transparent 100%),
+    radial-gradient(40% 90% at 88% 100%, var(--meadow) 99%, transparent 100%);
+}
+
+/* 奥の丘：少し濃い緑で、手前の丘の後ろに重ねる */
+.theme-nigiyaka .ground::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  top: -110px;
+  height: 112px;
+  background:
+    radial-gradient(34% 100% at 35% 100%, #b8e8cd 99%, transparent 100%),
+    radial-gradient(30% 85% at 72% 100%, #b8e8cd 99%, transparent 100%);
+}
+
+.theme-nigiyaka .ground::before {
+  z-index: 1;
+}
+
+.theme-nigiyaka .toc-block {
+  position: relative;
+  z-index: 2;
+}
+
+/* 野原の帯のすぐ下は、空の色をはさまずに章へつなぐ */
+.theme-nigiyaka .ground {
+  margin-bottom: 0;
+}
+
+.theme-nigiyaka main {
+  padding-top: var(--section-gap);
+}
+
+.theme-nigiyaka .ground .toc-title {
+  color: var(--green);
+}
+
+.theme-nigiyaka .ground p {
+  color: var(--text);
+}
+
+.theme-nigiyaka .ground a {
+  color: var(--text);
+}
+
+.theme-nigiyaka .ground a:hover {
+  color: var(--green);
+}
+
+.theme-nigiyaka .ground :focus-visible {
+  outline-color: var(--blue);
+}
+
+/* もくじ：色とりどりの吹き出しボタン */
+.theme-nigiyaka .toc {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .theme-nigiyaka .toc {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.theme-nigiyaka .toc::before {
+  display: none; /* 落ち着いた案の点線の道は使わない */
+}
+
+.theme-nigiyaka .toc li {
+  --c: var(--green);
+}
+
+.theme-nigiyaka .toc li:nth-child(2) { --c: var(--blue); }
+.theme-nigiyaka .toc li:nth-child(3) { --c: var(--orange); }
+.theme-nigiyaka .toc li:nth-child(4) { --c: var(--pink); }
+.theme-nigiyaka .toc li:nth-child(5) { --c: var(--purple); }
+.theme-nigiyaka .toc li:nth-child(6) { --c: var(--yellow-shadow); }
+
+.theme-nigiyaka .toc a {
+  position: relative;
+  min-height: 64px;
+  padding: 0.6rem 1rem;
+  border: 3px solid var(--c);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: 0 5px 0 var(--c);
+  text-decoration: none;
+}
+
+.theme-nigiyaka .toc a:hover {
+  color: var(--text);
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 var(--c);
+}
+
+.theme-nigiyaka .toc a::before {
+  background: var(--c);
+  border: 0;
+  color: #fff;
+  font-size: 1.1rem; /* 太字 19.8px の大きな文字 */
+}
+
+.theme-nigiyaka .toc li:last-child a::before {
+  background: var(--yellow);
+  color: var(--text);
+}
+
+.theme-nigiyaka .toc-adults {
+  border-top: 2px dashed var(--meadow-dark);
+}
+
+/* ---- 章：色ちがいの太い枠のカード ---- */
+.theme-nigiyaka .chapter {
+  --c: var(--green);
+  border: 4px solid var(--c);
+  border-radius: 24px;
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--c) 25%, transparent);
+}
+
+.theme-nigiyaka #origin { --c: var(--blue); }
+.theme-nigiyaka #grow { --c: var(--orange); }
+.theme-nigiyaka #eat { --c: var(--pink); }
+.theme-nigiyaka #nutrients { --c: var(--purple); }
+.theme-nigiyaka #quiz { --c: var(--yellow-shadow); }
+
+.theme-nigiyaka .chapter h2 {
+  color: var(--c);
+}
+
+/* 色の見出しは大きな文字（27px 太字）なので、オレンジ・黄土も 3:1 以上 */
+.theme-nigiyaka .chapter-no,
+.theme-nigiyaka #quiz .chapter-no {
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 0;
+  background: var(--c);
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* 落ち着いた案のルートの点線は使わず、章番号は見出しの中に置く */
+.theme-nigiyaka .chapter::before {
+  display: none !important;
+}
+
+@media (min-width: 1100px) {
+  .theme-nigiyaka .chapter:not(.adults) .chapter-no {
+    position: static;
+    margin-right: 0.75rem;
+  }
+}
+
+.theme-nigiyaka .steps li {
+  background: #fff;
+  border: 2px solid var(--border);
+}
+
+.theme-nigiyaka .steps li::before {
+  background: var(--c, var(--orange));
+}
+
+.theme-nigiyaka .steps strong {
+  color: var(--text);
+}
+
+.theme-nigiyaka .tip {
+  background: #eaf8f0;
+  border: 3px dashed var(--green);
+}
+
+.theme-nigiyaka .caution {
+  background: #fff3f7;
+  border: 3px solid var(--pink);
+}
+
+.theme-nigiyaka .caution-title {
+  color: var(--pink);
+}
+
+.theme-nigiyaka .back {
+  border-top: 2px dashed var(--border);
+}
+
+/* ---- クイズ ---- */
+.theme-nigiyaka .q-number {
+  color: var(--blue);
+}
+
+.theme-nigiyaka .progress-bar {
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+.theme-nigiyaka .choice {
+  border: 3px solid #b9d6ea;
+  border-radius: var(--radius);
+}
+
+.theme-nigiyaka .choice:hover {
+  border-color: var(--blue);
+}
+
+.theme-nigiyaka .choice:has(input:checked:not(:disabled)) {
+  border: 3px solid var(--blue);
+  background: #eaf4ff;
+}
+
+.theme-nigiyaka .choice-label {
+  border: 0;
+  color: #fff;
+  background: var(--blue);
+}
+
+.theme-nigiyaka .choice:nth-child(2) .choice-label {
+  background: var(--green);
+}
+
+.theme-nigiyaka .choice:nth-child(3) .choice-label {
+  background: var(--pink);
+}
+
+.theme-nigiyaka .choice.is-correct {
+  border: 3px solid var(--green);
+  background: #eaf8f0;
+}
+
+.theme-nigiyaka .choice.is-chosen {
+  border: 3px dashed var(--pink);
+  background: #fff3f7;
+}
+
+.theme-nigiyaka .tag-chosen {
+  background: var(--pink);
+}
+
+.theme-nigiyaka .feedback {
+  border-radius: var(--radius);
+}
+
+.theme-nigiyaka .feedback-ok {
+  border: 4px solid var(--green);
+}
+
+.theme-nigiyaka .feedback-ng {
+  border: 4px solid var(--pink);
+}
+
+.theme-nigiyaka .feedback-ng .feedback-title {
+  color: var(--pink);
+}
+
+.theme-nigiyaka .result-score {
+  font-family: var(--font-sans);
+  color: var(--blue);
+}
+
+.theme-nigiyaka .static-answer summary {
+  border: 3px solid var(--green);
+  border-radius: 999px;
+}
+
+/* ---- おうちの方と先生へ：読みやすさ優先で落ち着かせる ---- */
+.theme-nigiyaka .chapter.adults {
+  border: 0;
+  border-top: 6px solid var(--blue);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.theme-nigiyaka .adults h2,
+.theme-nigiyaka .adults h3 {
+  color: var(--blue);
+}
+
+/* ---- よくある質問・お問い合わせ ---- */
+.theme-nigiyaka .faq details {
+  border: 3px solid #b9d6ea;
+  border-radius: var(--radius);
+}
+
+.theme-nigiyaka .faq summary::before {
+  background: var(--blue);
+}
+
+.theme-nigiyaka .contact {
+  border: 3px solid var(--blue);
+  border-left-width: 10px;
+  border-radius: var(--radius);
+}
+
+/* ---- フッター：野原の色の帯 ---- */
+.theme-nigiyaka .site-footer {
+  max-width: none;
+  background: var(--meadow);
+  border-top: 0;
+  color: var(--text);
+}
+
+.theme-nigiyaka .site-footer > * {
+  max-width: 62rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.theme-nigiyaka .footer-credit {
+  border-color: var(--meadow-dark);
+}
+
+/* 動きを減らす設定：押したときの沈み込みも止める */
+@media (prefers-reduced-motion: reduce) {
+  .theme-nigiyaka .button:active,
+  .theme-nigiyaka .toc a:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 検証用の試作のため、検索エンジンの対象外にする（第8章）。公開時に外す -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>ヤーコンたんけん隊！ 小学生のためのヤーコンずかん｜日本ヤーコン協会</title>
+  <!-- 説明文は仮。監修済みの内容から作り直す（第8章） -->
+  <meta name="description" content="【試作・要監修】小学3〜4年生向けに、ヤーコンの植物・原産地・育て方・食べ方・成分を学び、クイズでふりかえるページです。">
+  <!-- canonical は公開URL（U03）が決まるまで設定しない -->
+  <!-- OGP画像は、素材台帳で「可」の素材が無いため設定しない（第5章・第8章） -->
+  <!-- ファビコンの自動リクエストを出さないための空指定 -->
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+
+  <!-- 試作であることの表示（協会確認用） -->
+  <div class="proto-banner" role="note">
+    <p><strong>【試作】</strong>協会の確認用です。文章・問題・解説はすべて仮の原稿で、監修前です。「【要監修】」の印が付いた所は、公開前に必ず確認します。図版は仮の枠です。</p>
+  </div>
+
+  <header class="site-header" id="intro">
+    <!-- ヒーロー：タイトルと開始ボタン（左）、表紙の図版（右。狭い画面では下） -->
+    <div class="hero">
+      <div class="hero-text">
+        <p class="org-name">日本ヤーコン協会</p>
+        <h1><span class="h1-line">ヤーコン</span><span class="h1-line">たんけん<ruby>隊<rp>（</rp><rt>たい</rt><rp>）</rp></ruby>！</span></h1>
+        <p class="lead tagline">ヤーコンという<ruby>植物<rp>（</rp><rt>しょくぶつ</rt><rp>）</rp></ruby>を、いっしょにたんけんしましょう。<span class="kanshu">【要監修】</span></p>
+        <p class="hero-actions"><a class="button" href="#plant">たんけんをはじめる</a></p>
+      </div>
+      <figure class="figure hero-figure">
+        <div class="placeholder">図版の予定：表紙のイラスト<br><span class="placeholder-note">候補：絵本イラスト（E01）またはあみっぺ（A01）。素材台帳の記入後に決めます。</span></div>
+      </figure>
+    </div>
+
+    <!-- もくじ：地面の線の下に「土の帯」を置き、地面の下へ掘り進むルートとして見せる -->
+    <div class="ground">
+    <div class="toc-block">
+      <h2 class="toc-title" id="toc-title">このページで学べること</h2>
+      <p>つぎの6つのことを、じゅんばんに学べます。<span class="kanshu">【要監修】</span></p>
+      <nav aria-labelledby="toc-title">
+        <ol class="toc" id="toc">
+          <li><a href="#plant">ヤーコンってなに？</a></li>
+          <li><a href="#origin">どこからきたの？</a></li>
+          <li><a href="#grow">どうやってそだつの？</a></li>
+          <li><a href="#eat">どうやってたべるの？</a></li>
+          <li><a href="#nutrients">なにがふくまれるの？</a></li>
+          <li><a href="#quiz">たんけんクイズ</a></li>
+        </ol>
+      </nav>
+      <p class="toc-adults"><a href="#adults">おうちの方と先生へ</a></p>
+    </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 2. 植物（C01） -->
+    <section class="chapter" id="plant" aria-labelledby="plant-title">
+      <h2 id="plant-title"><span class="chapter-no">1</span>ヤーコンってなに？</h2>
+      <p>ヤーコンは、<ruby>畑<rp>（</rp><rt>はたけ</rt><rp>）</rp></ruby>でそだてる<ruby>植物<rp>（</rp><rt>しょくぶつ</rt><rp>）</rp></ruby>です。キクのなかまだといわれています。<span class="kanshu">【要監修】</span></p>
+      <p><ruby>葉<rp>（</rp><rt>は</rt><rp>）</rp></ruby>や<ruby>茎<rp>（</rp><rt>くき</rt><rp>）</rp></ruby>は、地面の上でのびます。花がさくこともあります。<span class="kanshu">【要監修】</span></p>
+      <p>地面の下には、ふとい<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>ができます。ふだん食べるのは、この<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>です。<span class="kanshu">【要監修】</span></p>
+      <p>つぎの年に<ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える部分は、食べる<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>とはべつの部分です。<span class="kanshu">【要監修】</span></p>
+      <figure class="figure">
+        <div class="placeholder">図版の予定：葉・くき・花・地面の下の部分がわかる図<br><span class="placeholder-note">食べる部分と、植える部分を分けてしめします。</span></div>
+      </figure>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 3. 原産地（C02） -->
+    <section class="chapter" id="origin" aria-labelledby="origin-title">
+      <h2 id="origin-title"><span class="chapter-no">2</span>どこからきたの？</h2>
+      <p><ruby>原産地<rp>（</rp><rt>げんさんち</rt><rp>）</rp></ruby>とは、その<ruby>植物<rp>（</rp><rt>しょくぶつ</rt><rp>）</rp></ruby>がもともとそだっていた場所のことです。<span class="kanshu">【要監修】</span></p>
+      <p>ヤーコンの<ruby>原産地<rp>（</rp><rt>げんさんち</rt><rp>）</rp></ruby>は、南アメリカだといわれています。<span class="kanshu">【要監修】</span></p>
+      <p>アンデスという、高い山がつづく地いきです。日本からは、海をこえたとても遠い場所です。<span class="kanshu">【要監修】</span></p>
+      <figure class="figure">
+        <div class="placeholder">図版の予定：世界地図<br><span class="placeholder-note">南アメリカのアンデス地いきと、日本の位置をしめします。</span></div>
+      </figure>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 4. 栽培（C03） -->
+    <section class="chapter" id="grow" aria-labelledby="grow-title">
+      <h2 id="grow-title"><span class="chapter-no">3</span>どうやってそだつの？</h2>
+      <p>ヤーコンは、つぎのじゅんばんでそだてます。<span class="kanshu">【要監修】</span></p>
+      <ol class="steps">
+        <li><strong>うえる</strong>：<ruby>芽<rp>（</rp><rt>め</rt><rp>）</rp></ruby>が出る部分を、<ruby>畑<rp>（</rp><rt>はたけ</rt><rp>）</rp></ruby>に<ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>えます。<span class="kanshu">【要監修】</span></li>
+        <li><strong>そだつ</strong>：くきがのびて、<ruby>葉<rp>（</rp><rt>は</rt><rp>）</rp></ruby>がふえていきます。<span class="kanshu">【要監修】</span></li>
+        <li><strong>ほる</strong>：地面の下の<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>を、ていねいにほり出します。<span class="kanshu">【要監修】</span></li>
+        <li><strong>しまう</strong>：ほった<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>を、すずしい場所などにしまいます。<span class="kanshu">【要監修】</span></li>
+      </ol>
+      <p><ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える時期やほる時期は、地いきによってちがいます。<span class="kanshu">【要監修】</span></p>
+      <div class="tip">
+        <p class="tip-title">かんさつのポイント</p>
+        <p><ruby>葉<rp>（</rp><rt>は</rt><rp>）</rp></ruby>の数や、くきの高さを、ノートに書いてみましょう。<span class="kanshu">【要監修】</span></p>
+      </div>
+      <figure class="figure">
+        <div class="placeholder">図版の予定：うえる → そだつ → ほる → しまう の流れ図</div>
+      </figure>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 5. 食べ方（C04） -->
+    <section class="chapter" id="eat" aria-labelledby="eat-title">
+      <h2 id="eat-title"><span class="chapter-no">4</span>どうやってたべるの？</h2>
+      <p>ヤーコンは、地面の下にできた<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>を食べます。<span class="kanshu">【要監修】</span></p>
+      <p><ruby>皮<rp>（</rp><rt>かわ</rt><rp>）</rp></ruby>をむいて、サラダのように生で食べる<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>があります。<span class="kanshu">【要監修】</span></p>
+      <p>いためものなど、火を通して食べる<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>もあります。<span class="kanshu">【要監修】</span></p>
+      <div class="caution">
+        <p class="caution-title"><span aria-hidden="true">！</span> おうちの方といっしょに</p>
+        <ul>
+          <li>ほったあとは、土をよく<ruby>洗<rp>（</rp><rt>あら</rt><rp>）</rp></ruby>い流します。<span class="kanshu">【要監修】</span></li>
+          <li><ruby>包丁<rp>（</rp><rt>ほうちょう</rt><rp>）</rp></ruby>や火は、かならず大人といっしょに使います。<span class="kanshu">【要監修】</span></li>
+          <li>食べものアレルギーが<ruby>心配<rp>（</rp><rt>しんぱい</rt><rp>）</rp></ruby>なときは、大人に<ruby>相談<rp>（</rp><rt>そうだん</rt><rp>）</rp></ruby>します。<span class="kanshu">【要監修】</span></li>
+        </ul>
+      </div>
+      <figure class="figure">
+        <div class="placeholder">図版の予定：ちょうりの例<br><span class="placeholder-note">レシピは、実際に作ってたしかめたあとにのせます。</span></div>
+      </figure>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 6. 成分（C05）：健康効果を期待させる表現は使わない（第6章） -->
+    <section class="chapter" id="nutrients" aria-labelledby="nutrients-title">
+      <h2 id="nutrients-title"><span class="chapter-no">5</span>なにがふくまれるの？</h2>
+      <p><ruby>成分<rp>（</rp><rt>せいぶん</rt><rp>）</rp></ruby>とは、食べものの中にふくまれているもののことです。<span class="kanshu">【要監修】</span></p>
+      <p>ヤーコンの<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>には、水分や<ruby>糖<rp>（</rp><rt>とう</rt><rp>）</rp></ruby>のなかまがふくまれています。<span class="kanshu">【要監修】</span></p>
+      <p>ふくまれる<ruby>量<rp>（</rp><rt>りょう</rt><rp>）</rp></ruby>は、いつも同じではありません。<span class="kanshu">【要監修】</span></p>
+      <p><ruby>品種<rp>（</rp><rt>ひんしゅ</rt><rp>）</rp></ruby>や、しまい方、<ruby>調理<rp>（</rp><rt>ちょうり</rt><rp>）</rp></ruby>のしかたで、かわることがあります。<span class="kanshu">【要監修】</span></p>
+      <figure class="figure">
+        <div class="placeholder">図版の予定：成分のせつめい図<br><span class="placeholder-note">数値は、出典・基準の量・条件をたしかめてからのせます。</span></div>
+      </figure>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 7. クイズ（第4章） -->
+    <section class="chapter" id="quiz" aria-labelledby="quiz-title">
+      <h2 id="quiz-title"><span class="chapter-no">6</span>たんけんクイズ</h2>
+      <p>学んだことを、クイズでたしかめましょう。<span class="kanshu">【要監修】</span></p>
+
+      <!-- JavaScript が動くときのクイズ。quiz.js が中身を作り、hidden を外す -->
+      <div id="quiz-app" class="quiz-app" hidden></div>
+
+      <!-- JavaScript が動かないときの代替表示（全問題と、折りたたみの正解・解説）。
+           quiz-data.json から tools/build.mjs で生成する。手で書きかえない -->
+      <div id="quiz-static" class="quiz-static">
+<!-- QUIZ-STATIC:START -->
+        <p class="noscript-note">JavaScript が使えないため、問題と答えをまとめて表示しています。「こたえと解説を見る」をおすと、答えが出ます。</p>
+        <ol class="static-list">
+          <li class="static-q">
+            <h3>もんだい 1 / 4</h3>
+            <p class="q-text">ヤーコンで、ふだん食べるのはどの部分でしょう？<span class="kanshu">【要監修】</span></p>
+            <div class="placeholder placeholder-small">図版の予定：ヤーコンの全体図（葉・くき・花・地面の下の部分）</div>
+            <ul class="static-choices">
+              <li><span class="choice-label">A</span> <span class="choice-text"><ruby>葉<rp>（</rp><rt>は</rt><rp>）</rp></ruby></span></li>
+              <li><span class="choice-label">B</span> <span class="choice-text">地面の下にできる、ふとい<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby></span></li>
+              <li><span class="choice-label">C</span> <span class="choice-text">花</span></li>
+            </ul>
+            <details class="static-answer">
+              <summary>こたえと解説を見る</summary>
+              <p><strong>こたえ：B</strong> 地面の下にできる、ふとい<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby></p>
+              <p>ふだん食べるのは、地面の下にできる、ふとい<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>です。つぎの年に<ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える部分とは、ちがう部分です。<span class="kanshu">【要監修】</span></p>
+              <p><a href="#plant">「ヤーコンってなに？」をもういちど読む</a></p>
+            </details>
+          </li>
+          <li class="static-q">
+            <h3>もんだい 2 / 4</h3>
+            <p class="q-text">ヤーコンのふるさとは、どこだといわれているでしょう？<span class="kanshu">【要監修】</span></p>
+            <ul class="static-choices">
+              <li><span class="choice-label">A</span> <span class="choice-text">ヨーロッパ</span></li>
+              <li><span class="choice-label">B</span> <span class="choice-text"><ruby>南極<rp>（</rp><rt>なんきょく</rt><rp>）</rp></ruby></span></li>
+              <li><span class="choice-label">C</span> <span class="choice-text">南アメリカのアンデス地いき</span></li>
+            </ul>
+            <details class="static-answer">
+              <summary>こたえと解説を見る</summary>
+              <p><strong>こたえ：C</strong> 南アメリカのアンデス地いき</p>
+              <p>南アメリカのアンデス地いきだといわれています。高い山がつづく地いきです。<span class="kanshu">【要監修】</span></p>
+              <p><a href="#origin">「どこからきたの？」をもういちど読む</a></p>
+            </details>
+          </li>
+          <li class="static-q">
+            <h3>もんだい 3 / 4</h3>
+            <p class="q-text">ヤーコンがそだつじゅんばんで、正しいのはどれでしょう？<span class="kanshu">【要監修】</span></p>
+            <ul class="static-choices">
+              <li><span class="choice-label">A</span> <span class="choice-text"><ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える → そだつ → ほる</span></li>
+              <li><span class="choice-label">B</span> <span class="choice-text">ほる → <ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える → そだつ</span></li>
+              <li><span class="choice-label">C</span> <span class="choice-text">そだつ → ほる → <ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える</span></li>
+            </ul>
+            <details class="static-answer">
+              <summary>こたえと解説を見る</summary>
+              <p><strong>こたえ：A</strong> <ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>える → そだつ → ほる</p>
+              <p>まず畑に<ruby>植<rp>（</rp><rt>う</rt><rp>）</rp></ruby>えます。くきや<ruby>葉<rp>（</rp><rt>は</rt><rp>）</rp></ruby>がそだったあと、地面の下の<ruby>根<rp>（</rp><rt>ね</rt><rp>）</rp></ruby>をほります。<span class="kanshu">【要監修】</span></p>
+              <p><a href="#grow">「どうやってそだつの？」をもういちど読む</a></p>
+            </details>
+          </li>
+          <li class="static-q">
+            <h3>もんだい 4 / 4</h3>
+            <p class="q-text">ヤーコンを<ruby>調理<rp>（</rp><rt>ちょうり</rt><rp>）</rp></ruby>するとき、<ruby>包丁<rp>（</rp><rt>ほうちょう</rt><rp>）</rp></ruby>はどう使うとよいでしょう？<span class="kanshu">【要監修】</span></p>
+            <ul class="static-choices">
+              <li><span class="choice-label">A</span> <span class="choice-text">ひとりで、すばやく使う</span></li>
+              <li><span class="choice-label">B</span> <span class="choice-text">大人といっしょに使う</span></li>
+              <li><span class="choice-label">C</span> <span class="choice-text">友だちとふざけながら使う</span></li>
+            </ul>
+            <details class="static-answer">
+              <summary>こたえと解説を見る</summary>
+              <p><strong>こたえ：B</strong> 大人といっしょに使う</p>
+              <p><ruby>包丁<rp>（</rp><rt>ほうちょう</rt><rp>）</rp></ruby>や火は、かならず大人といっしょに使います。けがをしないように、ゆっくり使いましょう。<span class="kanshu">【要監修】</span></p>
+              <p><a href="#eat">「どうやってたべるの？」をもういちど読む</a></p>
+            </details>
+          </li>
+        </ol>
+<!-- QUIZ-STATIC:END -->
+      </div>
+
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+
+    <!-- 8. おうちの方と先生へ -->
+    <section class="chapter adults" id="adults" aria-labelledby="adults-title">
+      <h2 id="adults-title">おうちの方と先生へ</h2>
+      <p>このページは、小学3〜4年生向けの学習ページの試作です。<span class="kanshu">【要監修】</span></p>
+      <p>お子さまと一緒に読み、最後のクイズでふりかえる使い方を想定しています。<span class="kanshu">【要監修】</span></p>
+
+      <h3>監修と出典</h3>
+      <p>監修者：未定（協会が指定します）。<span class="kanshu">【要監修】</span></p>
+      <p>原稿の根拠資料は、原稿台帳で管理し、ここに一覧で載せます。<span class="kanshu">【要監修】</span></p>
+      <p>試作の時点では、出典はまだ確定していません。<span class="kanshu">【要監修】</span></p>
+
+      <h3>成分の章について</h3>
+      <p>成分の章は、何がふくまれるかを学ぶための内容です。<span class="kanshu">【要監修】</span></p>
+      <p>病気の予防や治療など、体への効果は扱っていません。<span class="kanshu">【要監修】</span></p>
+      <p>含有量の数値は、出典・基準量・条件を確認してから載せます。<span class="kanshu">【要監修】</span></p>
+
+      <h3>画像とクレジット（権利表示）</h3>
+      <p>現在の試作では、画像を1点も使っていません。図版はすべて仮の枠です。<span class="kanshu">【要監修】</span></p>
+      <p>あみっぺは、阿見町の使用承認の内容を確認してから載せます。<span class="kanshu">【要監修】</span></p>
+      <p>掲載予定の素材と、クレジット表示の欄は次のとおりです。<span class="kanshu">【要監修】</span></p>
+      <!-- クレジット文言は素材台帳（docs/assets.md）の文言を一字一句そのまま入れる。
+           台帳が空欄のため、現時点では文言を入れず「未記入」と表示する -->
+      <div class="table-wrap" role="region" aria-labelledby="credit-caption" tabindex="0">
+        <table class="credits">
+          <caption id="credit-caption">素材とクレジット表示の一覧</caption>
+          <thead>
+            <tr><th scope="col">素材ID</th><th scope="col">素材</th><th scope="col">クレジット表示</th><th scope="col">このページでの使用</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">E01</th><td>絵本のイラスト</td><td>素材台帳が未記入のため、未掲載</td><td>未使用</td></tr>
+            <tr><th scope="row">A01</th><td>阿見町マスコットキャラクター「あみっぺ」</td><td>画像のすぐ下に「あみっぺ」「©阿見町」を表示する予定です。承認の条件を見て確定します。</td><td>未使用</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>個人情報とデータの取り扱い</h3>
+      <p>このページでは、名前などの入力はありません。<span class="kanshu">【要監修】</span></p>
+      <p>Cookie、アクセス解析、外部との通信は使っていません。<span class="kanshu">【要監修】</span></p>
+      <p>クイズの答えは保存しません。ページを開き直すと最初に戻ります。<span class="kanshu">【要監修】</span></p>
+
+      <h3>よくある質問</h3>
+      <!-- 質問と答えは仮。協会の確認後に差し替える。details なので JavaScript が無くても開閉できる -->
+      <div class="faq">
+        <details>
+          <summary>何年生向けのページですか？</summary>
+          <p>小学3〜4年生を主な対象にしています。<span class="kanshu">【要監修】</span></p>
+          <p>おうちの方や先生と一緒に読むことを想定しています。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>クイズの結果は保存されますか？</summary>
+          <p>保存しません。名前などの入力もありません。<span class="kanshu">【要監修】</span></p>
+          <p>ページを開き直すと、最初の問題に戻ります。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>授業や学習会で使ってもよいですか？</summary>
+          <p>使い方の条件は、協会で決めてからお知らせします。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>ヤーコンを育ててみたいときは？</summary>
+          <p>育て方は地域によってちがいます。<span class="kanshu">【要監修】</span></p>
+          <p>くわしくは、協会の窓口にお問い合わせください。<span class="kanshu">【要監修】</span></p>
+        </details>
+      </div>
+
+      <h3>お問い合わせ</h3>
+      <!-- このページには入力フォームを置かない（第10章）。協会の窓口へ案内する。窓口のURL・連絡先は未確定（U02） -->
+      <div class="contact">
+        <p>内容についてのご質問は、日本ヤーコン協会の窓口で受け付けます。<span class="kanshu">【要監修】</span></p>
+        <p>窓口の案内は、連絡先が決まってからここに載せます。<span class="kanshu">【要監修】</span></p>
+      </div>
+
+      <h3>運営と更新日</h3>
+      <p>運営：日本ヤーコン協会<span class="kanshu">【要監修】</span></p>
+      <p>更新日：<time datetime="2026-11-04">2026年11月4日</time>（試作）</p>
+
+      <h3>日本ヤーコン協会のページ</h3>
+      <!-- 協会トップのURLが未確定（U02）のため、リンクは仮の文言のみ -->
+      <p>日本ヤーコン協会のトップページへのリンクを、ここに置きます（URL確定後）。<span class="kanshu">【要監修】</span></p>
+      <p class="back"><a href="#toc">もくじにもどる</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <!-- フッターのリンクは、ページ内の移動だけ。協会トップ・窓口のURLは未確定（U02）のため、まだ置かない -->
+    <nav class="footer-nav" aria-label="ページ内のリンク">
+      <ul>
+        <li><a href="#intro">ページの先頭へ</a></li>
+        <li><a href="#toc">もくじ</a></li>
+        <li><a href="#quiz">たんけんクイズ</a></li>
+        <li><a href="#adults">おうちの方と先生へ</a></li>
+      </ul>
+    </nav>
+    <!-- クレジット表示の位置（ページ下部）。素材を掲載したら、台帳の文言をここにも入れる -->
+    <p class="footer-credit">クレジット表示：素材の掲載時に、素材台帳の文言をここに表示します。</p>
+    <p>運営：日本ヤーコン協会（試作）</p>
+  </footer>
+
+  <!-- クイズの問題データ。quiz-data.json から tools/build.mjs で埋め込む。
+       file:// で開いたときも読めるように、fetch ではなく埋め込みにしている -->
+<!-- QUIZ-DATA:START -->
+  <script type="application/json" id="quiz-data">{"draft":true,"sections":{"plant":"ヤーコンってなに？","origin":"どこからきたの？","grow":"どうやってそだつの？","eat":"どうやってたべるの？","nutrients":"なにがふくまれるの？"},"questions":[{"id":"Q01","question":"ヤーコンで、ふだん食べるのはどの部分でしょう？","figure":"図版の予定：ヤーコンの全体図（葉・くき・花・地面の下の部分）","choices":[{"id":"a","text":"{葉|は}"},{"id":"b","text":"地面の下にできる、ふとい{根|ね}"},{"id":"c","text":"花"}],"answer":"b","explanation":"ふだん食べるのは、地面の下にできる、ふとい{根|ね}です。つぎの年に{植|う}える部分とは、ちがう部分です。","review":"plant"},{"id":"Q02","question":"ヤーコンのふるさとは、どこだといわれているでしょう？","choices":[{"id":"a","text":"ヨーロッパ"},{"id":"b","text":"{南極|なんきょく}"},{"id":"c","text":"南アメリカのアンデス地いき"}],"answer":"c","explanation":"南アメリカのアンデス地いきだといわれています。高い山がつづく地いきです。","review":"origin"},{"id":"Q03","question":"ヤーコンがそだつじゅんばんで、正しいのはどれでしょう？","choices":[{"id":"a","text":"{植|う}える → そだつ → ほる"},{"id":"b","text":"ほる → {植|う}える → そだつ"},{"id":"c","text":"そだつ → ほる → {植|う}える"}],"answer":"a","explanation":"まず畑に{植|う}えます。くきや{葉|は}がそだったあと、地面の下の{根|ね}をほります。","review":"grow"},{"id":"Q04","question":"ヤーコンを{調理|ちょうり}するとき、{包丁|ほうちょう}はどう使うとよいでしょう？","choices":[{"id":"a","text":"ひとりで、すばやく使う"},{"id":"b","text":"大人といっしょに使う"},{"id":"c","text":"友だちとふざけながら使う"}],"answer":"b","explanation":"{包丁|ほうちょう}や火は、かならず大人といっしょに使います。けがをしないように、ゆっくり使いましょう。","review":"eat"}]}</script>
+<!-- QUIZ-DATA:END -->
+  <script src="quiz.js" defer></script>
+</body>
+</html>

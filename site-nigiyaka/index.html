@@ -13,13 +13,14 @@
   <!-- ファビコンの自動リクエストを出さないための空指定 -->
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="nigiyaka.css">
 </head>
-<body>
+<body class="theme-nigiyaka">
   <a class="skip-link" href="#main">本文へスキップ</a>
 
   <!-- 試作であることの表示（協会確認用） -->
   <div class="proto-banner" role="note">
-    <p><strong>【試作】</strong>協会の確認用です。文章・問題・解説はすべて仮の原稿で、監修前です。「【要監修】」の印が付いた所は、公開前に必ず確認します。図版は仮の枠です。</p>
+    <p><strong>【試作・にぎやか案】</strong>協会の確認用です。文章・問題・解説はすべて仮の原稿で、監修前です。「【要監修】」の印が付いた所は、公開前に必ず確認します。図版は仮の枠です。</p>
   </div>
 
   <header class="site-header" id="intro">
@@ -27,7 +28,7 @@
     <div class="hero">
       <div class="hero-text">
         <p class="org-name">日本ヤーコン協会</p>
-        <h1><span class="h1-line">ヤーコン</span><span class="h1-line">たんけん<ruby>隊<rp>（</rp><rt>たい</rt><rp>）</rp></ruby>！</span></h1>
+        <h1><span class="h1-line"><span class="c1">ヤ</span><span class="c2">ー</span><span class="c3">コ</span><span class="c4">ン</span></span><span class="h1-line"><span class="c5">た</span><span class="c1">ん</span><span class="c2">け</span><span class="c3">ん</span><span class="c4"><ruby>隊<rp>（</rp><rt>たい</rt><rp>）</rp></ruby></span><span class="c5">！</span></span></h1>
         <p class="lead tagline">ヤーコンという<ruby>植物<rp>（</rp><rt>しょくぶつ</rt><rp>）</rp></ruby>を、いっしょにたんけんしましょう。<span class="kanshu">【要監修】</span></p>
         <p class="hero-actions"><a class="button" href="#plant">たんけんをはじめる</a></p>
       </div>
@@ -259,6 +260,37 @@
       <p>Cookie、アクセス解析、外部との通信は使っていません。<span class="kanshu">【要監修】</span></p>
       <p>クイズの答えは保存しません。ページを開き直すと最初に戻ります。<span class="kanshu">【要監修】</span></p>
 
+      <h3>よくある質問</h3>
+      <!-- 質問と答えは仮。協会の確認後に差し替える。details なので JavaScript が無くても開閉できる -->
+      <div class="faq">
+        <details>
+          <summary>何年生向けのページですか？</summary>
+          <p>小学3〜4年生を主な対象にしています。<span class="kanshu">【要監修】</span></p>
+          <p>おうちの方や先生と一緒に読むことを想定しています。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>クイズの結果は保存されますか？</summary>
+          <p>保存しません。名前などの入力もありません。<span class="kanshu">【要監修】</span></p>
+          <p>ページを開き直すと、最初の問題に戻ります。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>授業や学習会で使ってもよいですか？</summary>
+          <p>使い方の条件は、協会で決めてからお知らせします。<span class="kanshu">【要監修】</span></p>
+        </details>
+        <details>
+          <summary>ヤーコンを育ててみたいときは？</summary>
+          <p>育て方は地域によってちがいます。<span class="kanshu">【要監修】</span></p>
+          <p>くわしくは、協会の窓口にお問い合わせください。<span class="kanshu">【要監修】</span></p>
+        </details>
+      </div>
+
+      <h3>お問い合わせ</h3>
+      <!-- このページには入力フォームを置かない（第10章）。協会の窓口へ案内する。窓口のURL・連絡先は未確定（U02） -->
+      <div class="contact">
+        <p>内容についてのご質問は、日本ヤーコン協会の窓口で受け付けます。<span class="kanshu">【要監修】</span></p>
+        <p>窓口の案内は、連絡先が決まってからここに載せます。<span class="kanshu">【要監修】</span></p>
+      </div>
+
       <h3>運営と更新日</h3>
       <p>運営：日本ヤーコン協会<span class="kanshu">【要監修】</span></p>
       <p>更新日：<time datetime="2026-11-04">2026年11月4日</time>（試作）</p>
@@ -271,6 +303,15 @@
   </main>
 
   <footer class="site-footer">
+    <!-- フッターのリンクは、ページ内の移動だけ。協会トップ・窓口のURLは未確定（U02）のため、まだ置かない -->
+    <nav class="footer-nav" aria-label="ページ内のリンク">
+      <ul>
+        <li><a href="#intro">ページの先頭へ</a></li>
+        <li><a href="#toc">もくじ</a></li>
+        <li><a href="#quiz">たんけんクイズ</a></li>
+        <li><a href="#adults">おうちの方と先生へ</a></li>
+      </ul>
+    </nav>
     <!-- クレジット表示の位置（ページ下部）。素材を掲載したら、台帳の文言をここにも入れる -->
     <p class="footer-credit">クレジット表示：素材の掲載時に、素材台帳の文言をここに表示します。</p>
     <p>運営：日本ヤーコン協会（試作）</p>

@@ -950,12 +950,81 @@ h3 {
   }
 }
 
+/* ---- よくある質問・お問い合わせ ---- */
+.faq {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq details {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.faq summary {
+  display: flex;
+  align-items: center;
+  min-height: 52px; /* 44px 以上（N04） */
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.faq summary::before {
+  content: "Q";
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.75rem;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.faq details[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq details p {
+  margin: 0.75rem 1rem 0.75rem 3.55rem;
+}
+
+.contact {
+  padding: 1rem 1.25rem 0.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--navy);
+  border-radius: var(--radius-sm);
+}
+
 /* ---- フッター ---- */
 .site-footer {
   padding-top: 2rem;
   padding-bottom: 3rem;
   border-top: 1px solid var(--border);
   color: var(--text-sub);
+}
+
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding: 0;
+  margin: 0 0 1rem;
+  list-style: none;
+}
+
+.footer-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  min-width: 48px;
 }
 
 .footer-credit {
