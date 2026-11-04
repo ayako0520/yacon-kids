@@ -72,7 +72,12 @@ p {
   margin: 0 0 1em;
 }
 
-/* ふりがな */
+/* ふりがな
+   ruby-align: center で、ふりがなが長いときも親文字（例：植物）の間を空けない */
+ruby {
+  ruby-align: center;
+}
+
 ruby rt {
   font-size: 0.55em;
   letter-spacing: 0;

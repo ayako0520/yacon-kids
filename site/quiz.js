@@ -49,7 +49,7 @@
     String(s).split(/(\{[^{}|]+\|[^{}]+\})/).forEach(function (part) {
       var m = part.match(/^\{([^{}|]+)\|([^{}]+)\}$/);
       if (m) {
-        frag.appendChild(el('ruby', null, [m[1], el('rt', { text: m[2] })]));
+        frag.appendChild(el('ruby', null, [m[1], el('rp', { text: '（' }), el('rt', { text: m[2] }), el('rp', { text: '）' })]));
       } else if (part) {
         frag.appendChild(document.createTextNode(part));
       }

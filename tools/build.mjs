@@ -59,7 +59,7 @@ const ruby = (s) =>
     .split(/(\{[^{}|]+\|[^{}]+\})/)
     .map((part) => {
       const m = part.match(/^\{([^{}|]+)\|([^{}]+)\}$/);
-      return m ? `<ruby>${esc(m[1])}<rt>${esc(m[2])}</rt></ruby>` : esc(part);
+      return m ? `<ruby>${esc(m[1])}<rp>（</rp><rt>${esc(m[2])}</rt><rp>）</rp></ruby>` : esc(part);
     })
     .join('');
 const mark = data.draft ? `<span class="kanshu">${DRAFT_MARK}</span>` : '';
