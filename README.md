@@ -30,6 +30,17 @@
 端末に Zen Kaku Gothic / Noto Sans JP（本文）、Shippori Mincho（冒頭の一文）が入っていれば使い、無ければヒラギノ・游ゴシックなど端末の標準フォントで表示します。
 どの端末でも同じ見た目にしたい場合は、フォントファイルをサイトに同梱する方法があります（ライセンス一覧の管理が必要）。
 
+## デザインは2案あります
+
+| ファイル | 案 | 雰囲気 |
+| --- | --- | --- |
+| `site/index.html` | 落ち着いた案 | アイボリーと森の緑。地面の線と土の帯、章をつなぐたんけんルート |
+| `site/nigiyaka.html` | にぎやか案 | 空色と多色の題名、白い縁取り、立体的な丸いボタン、雲・太陽・丘の図形 |
+
+文章・クイズは2案で同じです。にぎやか案は `site/nigiyaka.css` を重ねて読み込み、見た目だけを変えています。
+`site/nigiyaka.html` は `node tools/build.mjs` が `index.html` から作ります。手で書きかえないでください。
+文章を直すときは `index.html` だけを直し、`node tools/build.mjs` を実行します。
+
 ## 見方
 
 ### いちばん簡単な方法
@@ -54,7 +65,9 @@ cd site && python3 -m http.server 8000
 
 ```
 site/
-  index.html       … ページ本体（8セクションの縦長1ページ）
+  index.html       … ページ本体（8セクションの縦長1ページ）。落ち着いた案
+  nigiyaka.html    … にぎやか案（build.mjs が index.html から生成）
+  nigiyaka.css     … にぎやか案の見た目（styles.css に重ねる）
   styles.css       … 見た目（モバイル優先、外部フォントなし）
   quiz.js          … クイズの動き（第4章 4.2）
   quiz-data.json   … クイズの問題データ（原稿。ここを編集する）

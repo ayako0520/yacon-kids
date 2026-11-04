@@ -101,13 +101,47 @@ const replaceBlock = (src, name, body) => {
 };
 const out = replaceBlock(replaceBlock(htmlSrc, 'QUIZ-STATIC', staticHtml), 'QUIZ-DATA', dataHtml);
 
+// ---- 3. にぎやか案（nigiyaka.html）の生成 ----
+// index.html と同じ内容に、nigiyaka.css と目印のクラスを足し、題名を1文字ずつ色分けする。
+// 文章を直すときは index.html だけを直し、このスクリプトで nigiyaka.html を作り直す。
+const nigiyakaPath = join(root, 'site', 'nigiyaka.html');
+const mustReplace = (src, from, to) => {
+  if (!src.includes(from)) throw new Error(`にぎやか案の生成：index.html に「${from.slice(0, 40)}」がありません`);
+  return src.replace(from, to);
+};
+// 題名の文字を色の順に包む（ふりがなの ruby は1つの塊として扱う）
+const colorize = (text, startIndex) => {
+  const parts = text.match(/<ruby>[\s\S]*?<\/ruby>|./g);
+  return parts.map((p, i) => `<span class="c${((startIndex + i) % 5) + 1}">${p}</span>`).join('');
+};
+const h1Line1 = 'ヤーコン';
+const h1Line2 = 'たんけん<ruby>隊<rp>（</rp><rt>たい</rt><rp>）</rp></ruby>！';
+let nigiyaka = out;
+nigiyaka = mustReplace(nigiyaka, '<link rel="stylesheet" href="styles.css">',
+  '<link rel="stylesheet" href="styles.css">\n  <link rel="stylesheet" href="nigiyaka.css">');
+nigiyaka = mustReplace(nigiyaka, '<body>', '<body class="theme-nigiyaka">');
+nigiyaka = mustReplace(nigiyaka, '<strong>【試作】</strong>', '<strong>【試作・にぎやか案】</strong>');
+nigiyaka = mustReplace(nigiyaka,
+  `<h1><span class="h1-line">${h1Line1}</span><span class="h1-line">${h1Line2}</span></h1>`,
+  `<h1><span class="h1-line">${colorize(h1Line1, 0)}</span><span class="h1-line">${colorize(h1Line2, 4)}</span></h1>`);
+nigiyaka = nigiyaka.replace('<!DOCTYPE html>', '<!DOCTYPE html>\n<!-- このファイルは tools/build.mjs が index.html から生成する。手で書きかえない -->');
+
 if (checkOnly) {
+  let ng = false;
   if (out !== htmlSrc) {
     console.error('index.html が quiz-data.json と一致していません。node tools/build.mjs を実行してください。');
-    process.exit(1);
+    ng = true;
   }
-  console.log(`OK：${total} 問。index.html は quiz-data.json と一致しています。`);
+  let current = '';
+  try { current = readFileSync(nigiyakaPath, 'utf8'); } catch { /* 無い場合は不一致として扱う */ }
+  if (current !== nigiyaka) {
+    console.error('nigiyaka.html が index.html と一致していません。node tools/build.mjs を実行してください。');
+    ng = true;
+  }
+  if (ng) process.exit(1);
+  console.log(`OK：${total} 問。index.html と nigiyaka.html は最新です。`);
 } else {
   writeFileSync(htmlPath, out);
-  console.log(`index.html を更新しました（${total} 問）。`);
+  writeFileSync(nigiyakaPath, nigiyaka);
+  console.log(`index.html と nigiyaka.html を更新しました（${total} 問）。`);
 }
