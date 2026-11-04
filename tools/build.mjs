@@ -1,18 +1,36 @@
-// クイズの問題データ（site/quiz-data.json）を検証し、site/index.html に反映するスクリプト。
+// クイズの問題データ（quiz-data.json）を検証し、同じフォルダの index.html に反映するスクリプト。
+// 案ごとにフォルダが分かれている（site-ochitsuki/ 落ち着いた案、site-nigiyaka/ にぎやか案）。
 // 使い方：
-//   node tools/build.mjs          … index.html を更新する
-//   node tools/build.mjs --check  … index.html が JSON と一致しているかだけ確かめる（不一致なら終了コード1）
+//   node tools/build.mjs                       … すべての案のフォルダを更新する
+//   node tools/build.mjs site-nigiyaka         … 指定した案のフォルダだけ更新する
+//   node tools/build.mjs --check               … index.html が JSON と一致しているかだけ確かめる（不一致なら終了コード1）
 // 外部パッケージは使わない（Node.js 18 以上）。
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const dataPath = join(root, 'site', 'quiz-data.json');
-const htmlPath = join(root, 'site', 'index.html');
 const checkOnly = process.argv.includes('--check');
+const ALL_SITES = ['site-ochitsuki', 'site-nigiyaka'];
+const named = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+const sites = named.length ? named : ALL_SITES;
 
+let failed = false;
+for (const site of sites) {
+  if (!existsSync(join(root, site, 'quiz-data.json'))) {
+    console.error(`${site}：quiz-data.json がありません（フォルダ名を確認してください）`);
+    failed = true;
+    continue;
+  }
+  if (!buildSite(site)) failed = true;
+}
+process.exit(failed ? 1 : 0);
+
+// ---- 1つの案のフォルダを処理する。成功なら true ----
+function buildSite(site) {
+const dataPath = join(root, site, 'quiz-data.json');
+const htmlPath = join(root, site, 'index.html');
 const DRAFT_MARK = '【要監修】';
 
 // ---- 1. 問題データの検証 ----
@@ -47,8 +65,8 @@ if (/\{[^}|]*$/.test(allText) || (allText.match(/\{/g) || []).length !== (allTex
   errors.push('ふりがな記法 {漢字|よみ} の括弧が閉じていない所があります');
 }
 if (errors.length) {
-  console.error('問題データにエラーがあります：\n- ' + errors.join('\n- '));
-  process.exit(1);
+  console.error(`${site}：問題データにエラーがあります：\n- ` + errors.join('\n- '));
+  return false;
 }
 
 // ---- 2. HTML の生成 ----
@@ -101,47 +119,15 @@ const replaceBlock = (src, name, body) => {
 };
 const out = replaceBlock(replaceBlock(htmlSrc, 'QUIZ-STATIC', staticHtml), 'QUIZ-DATA', dataHtml);
 
-// ---- 3. にぎやか案（nigiyaka.html）の生成 ----
-// index.html と同じ内容に、nigiyaka.css と目印のクラスを足し、題名を1文字ずつ色分けする。
-// 文章を直すときは index.html だけを直し、このスクリプトで nigiyaka.html を作り直す。
-const nigiyakaPath = join(root, 'site', 'nigiyaka.html');
-const mustReplace = (src, from, to) => {
-  if (!src.includes(from)) throw new Error(`にぎやか案の生成：index.html に「${from.slice(0, 40)}」がありません`);
-  return src.replace(from, to);
-};
-// 題名の文字を色の順に包む（ふりがなの ruby は1つの塊として扱う）
-const colorize = (text, startIndex) => {
-  const parts = text.match(/<ruby>[\s\S]*?<\/ruby>|./g);
-  return parts.map((p, i) => `<span class="c${((startIndex + i) % 5) + 1}">${p}</span>`).join('');
-};
-const h1Line1 = 'ヤーコン';
-const h1Line2 = 'たんけん<ruby>隊<rp>（</rp><rt>たい</rt><rp>）</rp></ruby>！';
-let nigiyaka = out;
-nigiyaka = mustReplace(nigiyaka, '<link rel="stylesheet" href="styles.css">',
-  '<link rel="stylesheet" href="styles.css">\n  <link rel="stylesheet" href="nigiyaka.css">');
-nigiyaka = mustReplace(nigiyaka, '<body>', '<body class="theme-nigiyaka">');
-nigiyaka = mustReplace(nigiyaka, '<strong>【試作】</strong>', '<strong>【試作・にぎやか案】</strong>');
-nigiyaka = mustReplace(nigiyaka,
-  `<h1><span class="h1-line">${h1Line1}</span><span class="h1-line">${h1Line2}</span></h1>`,
-  `<h1><span class="h1-line">${colorize(h1Line1, 0)}</span><span class="h1-line">${colorize(h1Line2, 4)}</span></h1>`);
-nigiyaka = nigiyaka.replace('<!DOCTYPE html>', '<!DOCTYPE html>\n<!-- このファイルは tools/build.mjs が index.html から生成する。手で書きかえない -->');
-
 if (checkOnly) {
-  let ng = false;
   if (out !== htmlSrc) {
-    console.error('index.html が quiz-data.json と一致していません。node tools/build.mjs を実行してください。');
-    ng = true;
+    console.error(`${site}：index.html が quiz-data.json と一致していません。node tools/build.mjs ${site} を実行してください。`);
+    return false;
   }
-  let current = '';
-  try { current = readFileSync(nigiyakaPath, 'utf8'); } catch { /* 無い場合は不一致として扱う */ }
-  if (current !== nigiyaka) {
-    console.error('nigiyaka.html が index.html と一致していません。node tools/build.mjs を実行してください。');
-    ng = true;
-  }
-  if (ng) process.exit(1);
-  console.log(`OK：${total} 問。index.html と nigiyaka.html は最新です。`);
+  console.log(`${site}：OK（${total} 問）。index.html は quiz-data.json と一致しています。`);
 } else {
   writeFileSync(htmlPath, out);
-  writeFileSync(nigiyakaPath, nigiyaka);
-  console.log(`index.html と nigiyaka.html を更新しました（${total} 問）。`);
+  console.log(`${site}：index.html を更新しました（${total} 問）。`);
+}
+return true;
 }

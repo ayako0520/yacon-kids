@@ -30,31 +30,31 @@
 端末に Zen Kaku Gothic / Noto Sans JP（本文）、Shippori Mincho（冒頭の一文）が入っていれば使い、無ければヒラギノ・游ゴシックなど端末の標準フォントで表示します。
 どの端末でも同じ見た目にしたい場合は、フォントファイルをサイトに同梱する方法があります（ライセンス一覧の管理が必要）。
 
-## デザインは2案あります
+## デザインは2案あります（フォルダごとに独立）
 
-| ファイル | 案 | 雰囲気 |
+| フォルダ | 案 | 雰囲気 |
 | --- | --- | --- |
-| `site/index.html` | 落ち着いた案 | アイボリーと森の緑。地面の線と土の帯、章をつなぐたんけんルート |
-| `site/nigiyaka.html` | にぎやか案 | 空色と多色の題名、白い縁取り、立体的な丸いボタン、雲・太陽・丘の図形 |
+| `site-ochitsuki/` | 落ち着いた案 | アイボリーと森の緑。地面の線と土の帯、章をつなぐたんけんルート |
+| `site-nigiyaka/` | にぎやか案 | 空色と多色の題名、白い縁取り、立体的な丸いボタン、雲・太陽・丘の図形 |
 
-文章・クイズは2案で同じです。にぎやか案は `site/nigiyaka.css` を重ねて読み込み、見た目だけを変えています。
-`site/nigiyaka.html` は `node tools/build.mjs` が `index.html` から作ります。手で書きかえないでください。
-文章を直すときは `index.html` だけを直し、`node tools/build.mjs` を実行します。
+2つの案は、HTML・CSS・クイズ・問題データをそれぞれのフォルダに持っています。
+片方の文章や問題を直しても、もう片方には影響しません。2案に共通の直しは、両方のフォルダで行います。
+にぎやか案は、そのフォルダの `styles.css` に `nigiyaka.css` を重ねて見た目を変えています。
 
 ## 見方
 
 ### いちばん簡単な方法
 
-`site/index.html` をブラウザ（Chrome・Edge・Firefox・Safari）にドラッグ＆ドロップするか、ダブルクリックで開きます。
+見たい案のフォルダの `index.html`（`site-ochitsuki/index.html` または `site-nigiyaka/index.html`）を、ブラウザ（Chrome・Edge・Firefox・Safari）にドラッグ＆ドロップするか、ダブルクリックで開きます。
 問題データは HTML に埋め込んでいるので、`file://` のままでもクイズが動きます。
 
 ### ローカルサーバーで開く場合（スマホ実機で見たいときなど）
 
 ```bash
-cd site && python3 -m http.server 8000
+python3 -m http.server 8000
 ```
 
-ブラウザで `http://localhost:8000/` を開きます。
+ブラウザで `http://localhost:8000/site-ochitsuki/` または `http://localhost:8000/site-nigiyaka/` を開きます。
 
 ### JavaScript が動かないときの表示を見る
 
@@ -64,15 +64,15 @@ cd site && python3 -m http.server 8000
 ## ファイル構成
 
 ```
-site/
-  index.html       … ページ本体（8セクションの縦長1ページ）。落ち着いた案
-  nigiyaka.html    … にぎやか案（build.mjs が index.html から生成）
-  nigiyaka.css     … にぎやか案の見た目（styles.css に重ねる）
+site-ochitsuki/    … 落ち着いた案
+  index.html       … ページ本体（8セクションの縦長1ページ）
   styles.css       … 見た目（モバイル優先、外部フォントなし）
   quiz.js          … クイズの動き（第4章 4.2）
   quiz-data.json   … クイズの問題データ（原稿。ここを編集する）
+site-nigiyaka/     … にぎやか案（中身の構成は同じ。nigiyaka.css で見た目を変える）
+  index.html / styles.css / nigiyaka.css / quiz.js / quiz-data.json
 tools/
-  build.mjs        … quiz-data.json を検証し、index.html に反映するスクリプト
+  build.mjs        … quiz-data.json を検証し、同じフォルダの index.html に反映するスクリプト
 docs/
   requirements.md  … 要件定義書 v1.1
   assets.md        … 素材台帳
@@ -82,11 +82,11 @@ docs/
 
 ## クイズの問題を変えるとき
 
-1. `site/quiz-data.json` を編集します（3〜5問。ふりがなは `{漢字|よみ}` と書く）。
-2. 次のコマンドで `index.html` に反映します（Node.js 18 以上）。
+1. 直したい案のフォルダの `quiz-data.json` を編集します（3〜5問。ふりがなは `{漢字|よみ}` と書く）。
+2. 次のコマンドで、その案の `index.html` に反映します（Node.js 18 以上）。フォルダ名を省くと、両方の案を更新します。
 
 ```bash
-node tools/build.mjs
+node tools/build.mjs site-nigiyaka
 ```
 
 3. 反映し忘れがないかは、次で確かめられます。
@@ -101,14 +101,16 @@ node tools/build.mjs --check
 
 ## 要件定義書との対応
 
+`site-*/` は、`site-ochitsuki/` と `site-nigiyaka/` の両方を指します。
+
 | 要件定義書 | 試作での対応 | 場所 |
 | --- | --- | --- |
-| 第2章 8セクション | `intro`・`plant`・`origin`・`grow`・`eat`・`nutrients`・`quiz`・`adults` を1ページに配置。目次、各章から目次へ戻るリンク、クイズ解説から該当章へのリンクあり | `site/index.html` |
-| 第3章 文章と表記 | です・ます調、1文40字以内（自動チェック済み）。専門語と、小3以降に習う漢字の一部に `ruby` でふりがな（漢字の学年配当による全数点検は未実施）。根拠のない数値・断定は書かず、すべてに【要監修】 | `site/index.html`、`site/quiz-data.json` |
-| 第4章 クイズ | 4問・各3択、ラジオボタン＋ラベル、未選択時の案内、正誤・正解・解説・該当章リンク、つぎへ、結果と復習案内、もういちど。成績は保存しない。JS無効時の代替表示あり | `site/quiz.js`、`site/quiz-data.json`、`tools/build.mjs` |
-| 第5章 素材の権利 | 台帳が空欄・素材ファイルなしのため画像は未使用。クレジット表示欄を「おうちの方と先生へ」とページ下部に用意 | `site/index.html`、`docs/checklist.md`（AC06） |
-| 第6章 栄養表現 | 成分の紹介と「量は条件で変わる」のみ。数値・強調・効能の表現なし | `site/index.html` の `nutrients` |
-| 第7章 N01〜N10 | 320〜1280px で横スクロールなし、本文18px、操作44px以上、コントラスト4.5:1以上、キーボード操作、フォーカス表示、本文スキップ、結果通知、色以外の正誤表示、`prefers-reduced-motion` | `site/styles.css`、`site/quiz.js` |
-| 第8章 SEO | `lang="ja"`、H1は1つ、見出し順序、タイトル案、説明文、`noindex`。canonical・OGP は未設定（理由はコメント参照） | `site/index.html` の `<head>` |
+| 第2章 8セクション | `intro`・`plant`・`origin`・`grow`・`eat`・`nutrients`・`quiz`・`adults` を1ページに配置。目次、各章から目次へ戻るリンク、クイズ解説から該当章へのリンクあり | `site-*/index.html` |
+| 第3章 文章と表記 | です・ます調、1文40字以内（自動チェック済み）。専門語と、小3以降に習う漢字の一部に `ruby` でふりがな（漢字の学年配当による全数点検は未実施）。根拠のない数値・断定は書かず、すべてに【要監修】 | `site-*/index.html`、`site-*/quiz-data.json` |
+| 第4章 クイズ | 4問・各3択、ラジオボタン＋ラベル、未選択時の案内、正誤・正解・解説・該当章リンク、つぎへ、結果と復習案内、もういちど。成績は保存しない。JS無効時の代替表示あり | `site-*/quiz.js`、`site-*/quiz-data.json`、`tools/build.mjs` |
+| 第5章 素材の権利 | 台帳が空欄・素材ファイルなしのため画像は未使用。クレジット表示欄を「おうちの方と先生へ」とページ下部に用意 | `site-*/index.html`、`docs/checklist.md`（AC06） |
+| 第6章 栄養表現 | 成分の紹介と「量は条件で変わる」のみ。数値・強調・効能の表現なし | `site-*/index.html` の `nutrients` |
+| 第7章 N01〜N10 | 320〜1280px で横スクロールなし、本文18px、操作44px以上、コントラスト4.5:1以上、キーボード操作、フォーカス表示、本文スキップ、結果通知、色以外の正誤表示、`prefers-reduced-motion` | `site-*/styles.css`、`site-*/quiz.js` |
+| 第8章 SEO | `lang="ja"`、H1は1つ、見出し順序、タイトル案、説明文、`noindex`。canonical・OGP は未設定（理由はコメント参照） | `site-*/index.html` の `<head>` |
 | 第11章 受入基準 | 対応状況を表にまとめた | `docs/checklist.md` |
 | 第13章 未確定事項 | 試作で新たに分かった質問 | `docs/open-questions.md` |

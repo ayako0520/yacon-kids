@@ -1,0 +1,1045 @@
+/* ヤーコンたんけん隊！（試作）のスタイル
+   デザインの方向性：「Academic & Organic Craft」
+   - あたたかく、誠実で、落ち着いた印象。光沢のある「テック」らしさは避ける
+   - 平らな面、やさしい角丸（8〜12px）、うすい暖色の枠線、ごく弱い影
+   - セクションの間は 80px 以上あけて、ゆったり読めるようにする
+   フォント：外部から読み込まない（外部通信なし）。端末に入っていれば
+   Zen Kaku Gothic / Noto Sans JP / Shippori Mincho を使い、無ければ端末の標準フォントになる
+   アクセシビリティ：文字のコントラストは 4.5:1 以上（大きな文字は 3:1 以上）を確認している（N05） */
+
+:root {
+  /* ---- 色 ---- */
+  --bg: #fbf9f5;            /* 背景：アイボリー */
+  --card: #ffffff;          /* カード：白 */
+  --text: #2b2b2b;          /* 本文：濃いチャコール（背景上で 13.5:1） */
+  --text-sub: #5b544c;      /* 補足文（背景上で 7:1 以上） */
+  --primary: #2d5a43;       /* ブランド色：深い森の緑（白文字で 7.9:1） */
+  --primary-dark: #22463a;
+  --primary-soft: #eef4f0;  /* 緑のうすい面 */
+  --navy: #243a5e;          /* 補助色：あたたかい紺（リンク・フォーカス） */
+  --cta: #e66b27;           /* CTA：テラコッタ。白文字は 3.2:1 のため、ボタン文字は「大きな文字」（太字 19.8px）にする */
+  --cta-dark: #b9531c;      /* CTA の押下・ホバー（白文字で 4.9:1） */
+  --cta-soft: #fdf1e9;      /* テラコッタのうすい面 */
+  --border: #eae5de;        /* 飾りの枠線（カードなど） */
+  --border-ui: #8c7e6c;     /* 意味を持つ枠線（選択肢など。白の上で 3.9:1） */
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --mark-bg: #fbeceb;       /* 【要監修】の印 */
+  --mark-text: #8b1a1a;
+  --placeholder-bg: #f3efe8;
+  --placeholder-text: #4a4239;
+
+  /* ---- 文字 ---- */
+  /* 日本語フォントを必ず先に並べる。名前が無いと、端末によっては中国語用フォントが選ばれ、
+     「植」「図」「版」などの字形が日本のものと違って見える */
+  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Source Han Sans JP", "IPAexGothic", "IPAPGothic", "IPAGothic", sans-serif;
+  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", "Noto Serif CJK JP", "Source Han Serif JP", "IPAexMincho", "IPAPMincho", "IPAMincho", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "IPAexGothic", "IPAPGothic", serif; /* 日本語の明朝体が無い端末では、中国語フォントより日本語のゴシック体を優先する */
+
+  /* ---- 余白 ---- */
+  --section-gap: 5rem;      /* 18px × 5 = 90px（80px 以上） */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 112.5%; /* 18px（端末の既定16pxの場合）を本文の基準にする（N02） */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* 動きを減らす設定でないときだけ、なめらかにスクロールする（N09） */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.8;
+  letter-spacing: 0.04em; /* ゆったりした字間 */
+  overflow-wrap: anywhere; /* 長い語で横にはみ出さない（N01） */
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+/* ふりがな
+   ruby-align: center で、ふりがなが長いときも親文字（例：植物）の間を空けない */
+ruby {
+  ruby-align: center;
+}
+
+ruby rt {
+  font-size: 0.55em;
+  letter-spacing: 0;
+}
+
+a {
+  color: var(--navy);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+a:hover {
+  color: var(--primary);
+  text-decoration-thickness: 2px;
+}
+
+/* フォーカスをはっきり見せる（N07） */
+:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+}
+
+/* フォーカスを移すためだけの要素（見出しなど） */
+[tabindex="-1"]:focus {
+  outline: 2px dashed var(--navy);
+  outline-offset: 6px;
+}
+
+main:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 本文へスキップ（フォーカスしたときだけ見える） */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -100px;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  background: var(--card);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* 試作であることの帯 */
+.proto-banner {
+  background: #f6efe3;
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+}
+
+.proto-banner p {
+  max-width: 64rem;
+  margin: 0 auto;
+  color: var(--text-sub);
+}
+
+.proto-banner strong {
+  color: var(--text);
+}
+
+/* 【要監修】の印 */
+.kanshu {
+  display: inline-block;
+  margin-left: 0.3em;
+  padding: 0 0.4em;
+  background: var(--mark-bg);
+  color: var(--mark-text);
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 1.6;
+  white-space: nowrap;
+  vertical-align: 0.05em;
+}
+
+/* ---- レイアウト ---- */
+/* 見どころは1か所：ヒーローの下の「地面の線と土の帯」と、章をつなぐ「たんけんルート」。
+   それ以外（カード・見出し・囲み）は静かに保つ */
+.hero,
+main,
+.site-footer {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 本文の読みやすい行の長さ（カードの中は約40字まで） */
+.chapter,
+.toc-block {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.06em;
+}
+
+/* 題名は文字そのものを主役にする：「ヤーコン」「たんけん隊！」を2行に積む */
+h1 {
+  margin: 0.5rem 0 1.25rem;
+  color: var(--primary);
+  font-size: clamp(2.4rem, 10vw, 4.25rem);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+
+.h1-line {
+  display: block;
+  white-space: nowrap;
+}
+
+h1 ruby rt {
+  font-size: 0.32em;
+  letter-spacing: 0;
+}
+
+h2 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 2rem 0 0.75rem;
+}
+
+/* ---- ヒーロー（地面の上） ---- */
+.hero {
+  display: grid;
+  gap: 2rem;
+  align-items: end;
+  padding-top: 3rem;
+  padding-bottom: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 3rem;
+    padding-top: 4.5rem;
+  }
+}
+
+.org-name {
+  margin: 0;
+  color: var(--text-sub);
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+/* 気持ちを伝える一文は明朝体で */
+.tagline {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.hero-actions {
+  margin: 1.75rem 0 0;
+}
+
+.hero-figure {
+  margin: 0;
+}
+
+.hero-figure .placeholder {
+  min-height: 9rem;
+}
+
+@media (min-width: 768px) {
+  .hero-figure .placeholder {
+    min-height: 16rem;
+  }
+}
+
+/* ---- 地面の線と土の帯（もくじ） ---- */
+.ground {
+  --soil: #4a3a2b;           /* 土の色。アイボリーの文字で 10.3:1 */
+  --soil-text: #fbf9f5;
+  --soil-sub: #e8dcc8;       /* 土の上の補足文（8.0:1） */
+  --soil-line: #c9b79c;      /* 土の上の道の線（5.6:1） */
+  --soil-focus: #f6c77d;     /* 土の上のフォーカス枠（6.9:1） */
+  background: var(--soil);
+  color: var(--soil-text);
+  border-top: 8px solid var(--primary); /* 地面（草）の線 */
+  padding: 3.5rem 1rem 4rem;
+  margin-bottom: var(--section-gap);
+}
+
+.ground .toc-title {
+  color: var(--soil-text);
+  font-size: 1.4rem;
+}
+
+.ground p {
+  color: var(--soil-sub);
+}
+
+.ground a {
+  color: var(--soil-text);
+}
+
+.ground a:hover {
+  color: var(--soil-focus);
+}
+
+.ground :focus-visible {
+  outline-color: var(--soil-focus);
+}
+
+/* もくじ＝地面の下へ掘り進むルート。点線の道でつなぐ（章は順番に進む内容なので番号を付ける） */
+.toc {
+  position: relative;
+  padding: 0;
+  margin: 1.75rem 0 1rem;
+  list-style: none;
+  counter-reset: toc;
+}
+
+.toc::before {
+  content: "";
+  position: absolute;
+  left: calc(1.1rem - 1.5px);
+  top: 1.5rem;
+  bottom: 1.5rem;
+  border-left: 3px dashed var(--soil-line);
+}
+
+.toc li {
+  position: relative;
+  counter-increment: toc;
+}
+
+.toc a {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.35rem 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+.toc a::before {
+  content: counter(toc);
+  position: relative; /* 点線の道の上に重ねる */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  background: var(--soil);
+  border: 2px solid var(--soil-line);
+  color: var(--soil-text);
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+/* ゴールのクイズだけ、テラコッタの地点にする */
+.toc li:last-child a::before {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: #fff;
+  font-size: 1.1rem; /* 太字 19.8px の大きな文字（白で 3.2:1） */
+}
+
+.toc-adults {
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(232, 220, 200, 0.35);
+}
+
+/* ---- 章（地面の下のルート上の地点） ---- */
+.chapter {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem 1.25rem;
+  margin-bottom: var(--section-gap);
+  scroll-margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .chapter {
+    padding: 2.75rem 3rem;
+  }
+}
+
+.chapter-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 0.75rem;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  font-size: 1.1rem;
+  letter-spacing: 0;
+  vertical-align: 0.1em;
+}
+
+#quiz .chapter-no {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: #fff; /* 太字 19.8px の大きな文字 */
+}
+
+/* 広い画面では、章の左にルートの点線を通し、章番号をその上の地点にする */
+@media (min-width: 1100px) {
+  .chapter:not(.adults)::before {
+    content: "";
+    position: absolute;
+    left: -3.5rem;
+    top: 2.75rem;
+    bottom: calc(-1 * var(--section-gap) - 2.75rem);
+    border-left: 3px dashed var(--border-ui);
+    margin-left: -1.5px;
+  }
+
+  /* ゴール（クイズ）で道は終わる */
+  #quiz::before {
+    bottom: auto;
+    height: 0;
+  }
+
+  .chapter:not(.adults) .chapter-no {
+    position: absolute;
+    left: calc(-3.5rem - 1.1rem);
+    top: calc(2.75rem + 0.2rem);
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+.back {
+  margin: 2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: right;
+}
+
+/* リンクも押しやすい高さにする（N04） */
+.back a,
+.toc a,
+.toc-adults a,
+.review-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* ---- もくじの外側 ---- */
+.toc-block {
+  margin-bottom: 0;
+}
+
+/* ---- ボタン（CTA：テラコッタ） ---- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 52px; /* 44px 以上（N04） */
+  padding: 0.5rem 1.75rem;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--cta);
+  color: #fff;
+  font: inherit;
+  font-size: 1.1rem; /* 19.8px の太字＝「大きな文字」。白文字とのコントラスト 3:1 以上を満たす */
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--cta-dark);
+  color: #fff;
+}
+
+.button:focus-visible {
+  outline-color: var(--navy);
+}
+
+/* ---- 図版の仮枠 ---- */
+.figure {
+  margin: 2rem 0;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 11rem;
+  padding: 1.25rem;
+  background: var(--placeholder-bg);
+  border: 2px dashed var(--border-ui);
+  border-radius: var(--radius);
+  color: var(--placeholder-text);
+  font-weight: bold;
+  text-align: center;
+}
+
+.placeholder-small {
+  min-height: 7rem;
+  margin: 0.5rem 0 1.25rem;
+}
+
+.placeholder-note {
+  margin-top: 0.25rem;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+/* ---- 囲み ---- */
+.steps {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 3.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 1rem;
+  top: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+.steps strong {
+  color: var(--primary);
+}
+
+.tip,
+.caution {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.25rem 0.5rem;
+  border-radius: var(--radius);
+}
+
+.tip {
+  background: var(--primary-soft);
+  border: 1px solid #d4e3d9;
+}
+
+.caution {
+  background: var(--cta-soft);
+  border: 1px solid #f2d3bf;
+}
+
+.tip-title,
+.caution-title {
+  margin: 0 0 0.5rem;
+  font-weight: bold;
+}
+
+.tip-title {
+  color: var(--primary);
+}
+
+.caution-title {
+  color: #a8441a; /* うすいテラコッタの面の上で 4.5:1 以上にするため、CTA より濃い色 */
+}
+
+.caution ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.caution li {
+  margin-bottom: 0.25rem;
+}
+
+/* ---- クイズ ---- */
+.q-number {
+  margin-top: 0.5rem;
+  color: var(--primary);
+}
+
+.progress {
+  height: 8px;
+  margin: 0 0 1.5rem;
+  background: #efeae2;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary);
+}
+
+.q-form fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.q-text {
+  padding: 0;
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.choices {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* 選択肢：ラベル全体を押せるようにし、44px 以上の高さにする（N04）
+   [ラジオ][記号][文言] の3列。回答後のタグは文言の下に出す */
+.choice {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  min-height: 60px;
+  padding: 0.6rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border-ui);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.choice:hover {
+  border-color: var(--primary);
+  background: #fcfbf8;
+}
+
+.choice:has(input:checked:not(:disabled)) {
+  border: 2px solid var(--primary);
+  background: var(--primary-soft);
+}
+
+.choice input {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin: 0;
+  accent-color: var(--primary);
+  flex: none;
+}
+
+.choice-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border-ui);
+  color: var(--text);
+  font-weight: bold;
+  letter-spacing: 0;
+  flex: none;
+}
+
+.choice-text {
+  min-width: 0;
+}
+
+.choice .tag {
+  grid-column: 3;
+  justify-self: start;
+}
+
+/* 回答後の表示。色に加えて「◯ せいかい」「あなたのこたえ」の文字で示す（N09） */
+.choice:has(input:disabled) {
+  cursor: default;
+}
+
+.choice.is-correct {
+  border: 2px solid var(--primary);
+  background: var(--primary-soft);
+}
+
+.choice.is-chosen {
+  border: 2px dashed var(--cta-dark);
+  background: var(--cta-soft);
+}
+
+.tag {
+  padding: 0 0.6rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.tag-correct {
+  background: var(--primary);
+  color: #fff;
+}
+
+.tag-chosen {
+  background: var(--cta-dark);
+  color: #fff;
+}
+
+.q-error {
+  margin: 0.75rem 0 0;
+  color: var(--mark-text);
+  font-weight: bold;
+}
+
+.q-error:empty {
+  display: none;
+}
+
+.feedback {
+  margin-top: 1.75rem;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.feedback-ok {
+  border: 1px solid #c9dccf;
+  border-top: 6px solid var(--primary);
+}
+
+.feedback-ng {
+  border: 1px solid #f2d3bf;
+  border-top: 6px solid var(--cta-dark);
+}
+
+.feedback-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.feedback-ok .feedback-title {
+  color: var(--primary);
+}
+
+.feedback-ng .feedback-title {
+  color: var(--cta-dark);
+}
+
+.result-score {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.review-list {
+  padding-left: 1.25rem;
+}
+
+/* ---- JavaScript が動かないときの代替表示 ---- */
+.noscript-note {
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-sub);
+}
+
+.static-list {
+  padding: 0;
+  list-style: none;
+}
+
+.static-q {
+  padding: 0.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.static-choices {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.static-choices li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.static-answer {
+  margin-top: 1rem;
+}
+
+.static-answer summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.25rem 1.25rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.static-answer[open] summary {
+  margin-bottom: 0.75rem;
+}
+
+/* ---- おうちの方と先生へ ----
+   子どものルートから外れた「資料」なので、カードにせず紺の線だけで区切る */
+.chapter.adults {
+  background: transparent;
+  border: 0;
+  border-top: 4px solid var(--navy);
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.adults h2 {
+  color: var(--navy);
+}
+
+.adults h3 {
+  color: var(--navy);
+  margin-top: 2.25rem;
+}
+
+.table-wrap {
+  overflow-x: auto; /* 表だけを横スクロールにして、ページ全体は横にはみ出さない */
+}
+
+.credits {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: var(--card);
+}
+
+.credits caption {
+  text-align: left;
+  font-weight: bold;
+  padding-bottom: 0.5rem;
+}
+
+.credits th,
+.credits td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.credits thead th {
+  background: var(--bg);
+}
+
+/* 狭い画面では、表を縦積みにする（N01） */
+@media (max-width: 599px) {
+  .credits thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .credits tr,
+  .credits th,
+  .credits td {
+    display: block;
+  }
+
+  .credits tr {
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .credits th,
+  .credits td {
+    border: 0;
+  }
+
+  .credits td::before {
+    display: block;
+    color: var(--text-sub);
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .credits td:nth-of-type(1)::before {
+    content: "素材";
+  }
+
+  .credits td:nth-of-type(2)::before {
+    content: "クレジット表示";
+  }
+
+  .credits td:nth-of-type(3)::before {
+    content: "このページでの使用";
+  }
+}
+
+/* ---- よくある質問・お問い合わせ ---- */
+.faq {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq details {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.faq summary {
+  display: flex;
+  align-items: center;
+  min-height: 52px; /* 44px 以上（N04） */
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.faq summary::before {
+  content: "Q";
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.75rem;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.faq details[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq details p {
+  margin: 0.75rem 1rem 0.75rem 3.55rem;
+}
+
+.contact {
+  padding: 1rem 1.25rem 0.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--navy);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- フッター ---- */
+.site-footer {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-sub);
+}
+
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding: 0;
+  margin: 0 0 1rem;
+  list-style: none;
+}
+
+.footer-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.footer-credit {
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--border-ui);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+
+/* 動きを減らす設定のときは、変化のアニメーションを止める（N09） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
