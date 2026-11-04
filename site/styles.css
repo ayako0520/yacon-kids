@@ -31,8 +31,10 @@
   --placeholder-text: #4a4239;
 
   /* ---- 文字 ---- */
-  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
-  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+  /* 日本語フォントを必ず先に並べる。名前が無いと、端末によっては中国語用フォントが選ばれ、
+     「植」「図」「版」などの字形が日本のものと違って見える */
+  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Source Han Sans JP", "IPAexGothic", "IPAPGothic", "IPAGothic", sans-serif;
+  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", "Noto Serif CJK JP", "Source Han Serif JP", "IPAexMincho", "IPAPMincho", "IPAMincho", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "IPAexGothic", "IPAPGothic", serif; /* 日本語の明朝体が無い端末では、中国語フォントより日本語のゴシック体を優先する */
 
   /* ---- 余白 ---- */
   --section-gap: 5rem;      /* 18px × 5 = 90px（80px 以上） */
@@ -72,7 +74,12 @@ p {
   margin: 0 0 1em;
 }
 
-/* ふりがな */
+/* ふりがな
+   ruby-align: center で、ふりがなが長いときも親文字（例：植物）の間を空けない */
+ruby {
+  ruby-align: center;
+}
+
 ruby rt {
   font-size: 0.55em;
   letter-spacing: 0;
@@ -173,7 +180,9 @@ img {
 }
 
 /* ---- レイアウト ---- */
-.site-header,
+/* 見どころは1か所：ヒーローの下の「地面の線と土の帯」と、章をつなぐ「たんけんルート」。
+   それ以外（カード・見出し・囲み）は静かに保つ */
+.hero,
 main,
 .site-footer {
   max-width: 64rem;
@@ -195,17 +204,23 @@ h3 {
   letter-spacing: 0.06em;
 }
 
+/* 題名は文字そのものを主役にする：「ヤーコン」「たんけん隊！」を2行に積む */
 h1 {
-  margin: 0.25rem 0 1rem;
+  margin: 0.5rem 0 1.25rem;
   color: var(--primary);
-  font-size: clamp(1.75rem, 5.5vw, 2.75rem);
-  line-height: 1.4;
-  letter-spacing: 0.03em;
+  font-size: clamp(2.4rem, 10vw, 4.25rem);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
 }
 
-/* 「ヤーコン／たんけん隊！」の切れ目でだけ折り返す */
-.nowrap {
+.h1-line {
+  display: block;
   white-space: nowrap;
+}
+
+h1 ruby rt {
+  font-size: 0.32em;
+  letter-spacing: 0;
 }
 
 h2 {
@@ -221,36 +236,28 @@ h3 {
   margin: 2rem 0 0.75rem;
 }
 
-/* ---- ヒーロー ---- */
-.site-header {
-  padding-top: 3rem;
-}
-
+/* ---- ヒーロー（地面の上） ---- */
 .hero {
   display: grid;
   gap: 2rem;
-  align-items: center;
-  margin-bottom: var(--section-gap);
+  align-items: end;
+  padding-top: 3rem;
+  padding-bottom: 3.5rem;
 }
 
 @media (min-width: 768px) {
   .hero {
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1.15fr 1fr;
     gap: 3rem;
-    padding: 2rem 0;
+    padding-top: 4.5rem;
   }
 }
 
 .org-name {
-  display: inline-block;
   margin: 0;
-  padding: 0.1rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--card);
-  color: var(--primary);
-  font-size: 1rem;
+  color: var(--text-sub);
   font-weight: bold;
+  letter-spacing: 0.1em;
 }
 
 /* 気持ちを伝える一文は明朝体で */
@@ -270,11 +277,121 @@ h3 {
 }
 
 .hero-figure .placeholder {
-  min-height: 16rem;
+  min-height: 9rem;
 }
 
-/* ---- カード（各章） ---- */
+@media (min-width: 768px) {
+  .hero-figure .placeholder {
+    min-height: 16rem;
+  }
+}
+
+/* ---- 地面の線と土の帯（もくじ） ---- */
+.ground {
+  --soil: #4a3a2b;           /* 土の色。アイボリーの文字で 10.3:1 */
+  --soil-text: #fbf9f5;
+  --soil-sub: #e8dcc8;       /* 土の上の補足文（8.0:1） */
+  --soil-line: #c9b79c;      /* 土の上の道の線（5.6:1） */
+  --soil-focus: #f6c77d;     /* 土の上のフォーカス枠（6.9:1） */
+  background: var(--soil);
+  color: var(--soil-text);
+  border-top: 8px solid var(--primary); /* 地面（草）の線 */
+  padding: 3.5rem 1rem 4rem;
+  margin-bottom: var(--section-gap);
+}
+
+.ground .toc-title {
+  color: var(--soil-text);
+  font-size: 1.4rem;
+}
+
+.ground p {
+  color: var(--soil-sub);
+}
+
+.ground a {
+  color: var(--soil-text);
+}
+
+.ground a:hover {
+  color: var(--soil-focus);
+}
+
+.ground :focus-visible {
+  outline-color: var(--soil-focus);
+}
+
+/* もくじ＝地面の下へ掘り進むルート。点線の道でつなぐ（章は順番に進む内容なので番号を付ける） */
+.toc {
+  position: relative;
+  padding: 0;
+  margin: 1.75rem 0 1rem;
+  list-style: none;
+  counter-reset: toc;
+}
+
+.toc::before {
+  content: "";
+  position: absolute;
+  left: calc(1.1rem - 1.5px);
+  top: 1.5rem;
+  bottom: 1.5rem;
+  border-left: 3px dashed var(--soil-line);
+}
+
+.toc li {
+  position: relative;
+  counter-increment: toc;
+}
+
+.toc a {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.35rem 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+.toc a::before {
+  content: counter(toc);
+  position: relative; /* 点線の道の上に重ねる */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  background: var(--soil);
+  border: 2px solid var(--soil-line);
+  color: var(--soil-text);
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+/* ゴールのクイズだけ、テラコッタの地点にする */
+.toc li:last-child a::before {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: #fff;
+  font-size: 1.1rem; /* 太字 19.8px の大きな文字（白で 3.2:1） */
+}
+
+.toc-adults {
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(232, 220, 200, 0.35);
+}
+
+/* ---- 章（地面の下のルート上の地点） ---- */
 .chapter {
+  position: relative;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -298,12 +415,45 @@ h3 {
   height: 2.2rem;
   margin-right: 0.75rem;
   border-radius: 50%;
-  background: var(--primary-soft);
+  background: var(--card);
   color: var(--primary);
-  border: 1px solid #c9dccf;
+  border: 2px solid var(--primary);
   font-size: 1.1rem;
   letter-spacing: 0;
   vertical-align: 0.1em;
+}
+
+#quiz .chapter-no {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: #fff; /* 太字 19.8px の大きな文字 */
+}
+
+/* 広い画面では、章の左にルートの点線を通し、章番号をその上の地点にする */
+@media (min-width: 1100px) {
+  .chapter:not(.adults)::before {
+    content: "";
+    position: absolute;
+    left: -3.5rem;
+    top: 2.75rem;
+    bottom: calc(-1 * var(--section-gap) - 2.75rem);
+    border-left: 3px dashed var(--border-ui);
+    margin-left: -1.5px;
+  }
+
+  /* ゴール（クイズ）で道は終わる */
+  #quiz::before {
+    bottom: auto;
+    height: 0;
+  }
+
+  .chapter:not(.adults) .chapter-no {
+    position: absolute;
+    left: calc(-3.5rem - 1.1rem);
+    top: calc(2.75rem + 0.2rem);
+    margin: 0;
+    font-size: 1.1rem;
+  }
 }
 
 .back {
@@ -323,67 +473,9 @@ h3 {
   min-height: 44px;
 }
 
-/* ---- もくじ ---- */
+/* ---- もくじの外側 ---- */
 .toc-block {
-  margin-bottom: var(--section-gap);
-}
-
-.toc-title {
-  font-size: 1.3rem;
-}
-
-.toc {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-  padding: 0;
-  margin: 0 0 0.75rem;
-  list-style: none;
-  counter-reset: toc;
-}
-
-@media (min-width: 600px) {
-  .toc {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.toc li {
-  counter-increment: toc;
-}
-
-.toc a {
-  width: 100%;
-  min-height: 56px;
-  padding: 0.5rem 1rem;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  color: var(--text);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.toc a::before {
-  content: counter(toc);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-right: 0.75rem;
-  border-radius: 50%;
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-size: 0.95em;
-  letter-spacing: 0;
-}
-
-.toc a:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  margin-bottom: 0;
 }
 
 /* ---- ボタン（CTA：テラコッタ） ---- */
@@ -761,15 +853,25 @@ h3 {
   margin-bottom: 0.75rem;
 }
 
-/* ---- おうちの方と先生へ ---- */
-.adults {
-  background: #fdfcf9;
+/* ---- おうちの方と先生へ ----
+   子どものルートから外れた「資料」なので、カードにせず紺の線だけで区切る */
+.chapter.adults {
+  background: transparent;
+  border: 0;
+  border-top: 4px solid var(--navy);
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.adults h2 {
+  color: var(--navy);
 }
 
 .adults h3 {
   color: var(--navy);
-  padding-left: 0.75rem;
-  border-left: 4px solid var(--navy);
+  margin-top: 2.25rem;
 }
 
 .table-wrap {
