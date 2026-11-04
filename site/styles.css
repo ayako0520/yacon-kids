@@ -1,24 +1,41 @@
 /* ヤーコンたんけん隊！（試作）のスタイル
-   - 外部フォントは使わず、端末のフォントを使う
-   - 文字サイズは rem で指定し、端末の文字拡大を妨げない（N02・N03）
-   - 色の組み合わせは、通常文字 4.5:1 以上を目安に選んでいる（N05） */
+   デザインの方向性：「Academic & Organic Craft」
+   - あたたかく、誠実で、落ち着いた印象。光沢のある「テック」らしさは避ける
+   - 平らな面、やさしい角丸（8〜12px）、うすい暖色の枠線、ごく弱い影
+   - セクションの間は 80px 以上あけて、ゆったり読めるようにする
+   フォント：外部から読み込まない（外部通信なし）。端末に入っていれば
+   Zen Kaku Gothic / Noto Sans JP / Shippori Mincho を使い、無ければ端末の標準フォントになる
+   アクセシビリティ：文字のコントラストは 4.5:1 以上（大きな文字は 3:1 以上）を確認している（N05） */
 
 :root {
-  --bg: #fffaf0;          /* 背景：うすいクリーム色 */
-  --text: #2b2118;        /* 本文：こげ茶 */
-  --muted: #5a4a3a;       /* 補足文 */
-  --green: #2e6630;       /* 見出し・ボタン（白文字で約6.6:1） */
-  --green-dark: #1f4a21;
-  --brown: #7a4a1e;       /* アクセント（背景上で約7:1） */
-  --card: #ffffff;
-  --line: #8a7560;        /* 枠線（背景に対して3:1以上） */
-  --ok-bg: #e8f5e9;
-  --ng-bg: #fff3e0;
-  --mark-bg: #fde8e8;     /* 【要監修】の印 */
+  /* ---- 色 ---- */
+  --bg: #fbf9f5;            /* 背景：アイボリー */
+  --card: #ffffff;          /* カード：白 */
+  --text: #2b2b2b;          /* 本文：濃いチャコール（背景上で 13.5:1） */
+  --text-sub: #5b544c;      /* 補足文（背景上で 7:1 以上） */
+  --primary: #2d5a43;       /* ブランド色：深い森の緑（白文字で 7.9:1） */
+  --primary-dark: #22463a;
+  --primary-soft: #eef4f0;  /* 緑のうすい面 */
+  --navy: #243a5e;          /* 補助色：あたたかい紺（リンク・フォーカス） */
+  --cta: #e66b27;           /* CTA：テラコッタ。白文字は 3.2:1 のため、ボタン文字は「大きな文字」（太字 19.8px）にする */
+  --cta-dark: #b9531c;      /* CTA の押下・ホバー（白文字で 4.9:1） */
+  --cta-soft: #fdf1e9;      /* テラコッタのうすい面 */
+  --border: #eae5de;        /* 飾りの枠線（カードなど） */
+  --border-ui: #8c7e6c;     /* 意味を持つ枠線（選択肢など。白の上で 3.9:1） */
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --mark-bg: #fbeceb;       /* 【要監修】の印 */
   --mark-text: #8b1a1a;
-  --focus: #1a56b0;       /* フォーカスの枠 */
-  --placeholder-bg: #e6eef8;
-  --placeholder-line: #4a6a96;
+  --placeholder-bg: #f3efe8;
+  --placeholder-text: #4a4239;
+
+  /* ---- 文字 ---- */
+  --font-sans: "Zen Kaku Gothic New", "Zen Kaku Gothic Antique", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --font-serif: "Shippori Mincho", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+
+  /* ---- 余白 ---- */
+  --section-gap: 5rem;      /* 18px × 5 = 90px（80px 以上） */
 }
 
 *,
@@ -28,7 +45,7 @@
 }
 
 html {
-  font-size: 112.5%; /* 18px（端末の既定16pxの場合）を本文の基準にする */
+  font-size: 112.5%; /* 18px（端末の既定16pxの場合）を本文の基準にする（N02） */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -44,37 +61,48 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.8; /* ふりがな込みで行間 1.7 以上（N02） */
+  line-height: 1.8;
+  letter-spacing: 0.04em; /* ゆったりした字間 */
   overflow-wrap: anywhere; /* 長い語で横にはみ出さない（N01） */
+}
+
+p {
+  margin: 0 0 1em;
 }
 
 /* ふりがな */
 ruby rt {
-  font-size: 0.6em;
+  font-size: 0.55em;
+  letter-spacing: 0;
 }
 
 a {
-  color: var(--green-dark);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
+  color: var(--navy);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 
 a:hover {
-  color: var(--brown);
+  color: var(--primary);
+  text-decoration-thickness: 2px;
 }
 
 /* フォーカスをはっきり見せる（N07） */
 :focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 3px solid var(--navy);
   outline-offset: 3px;
 }
 
-/* フォーカスを移すためだけの要素（見出しなど）は枠を控えめに */
+/* フォーカスを移すためだけの要素（見出しなど） */
 [tabindex="-1"]:focus {
-  outline: 3px dashed var(--focus);
-  outline-offset: 4px;
+  outline: 2px dashed var(--navy);
+  outline-offset: 6px;
+}
+
+main:focus {
+  outline: none;
 }
 
 img {
@@ -102,8 +130,8 @@ img {
   z-index: 10;
   padding: 0.6rem 1rem;
   background: var(--card);
-  border: 2px solid var(--green);
-  border-radius: 8px;
+  border: 2px solid var(--navy);
+  border-radius: var(--radius-sm);
 }
 
 .skip-link:focus {
@@ -112,87 +140,153 @@ img {
 
 /* 試作であることの帯 */
 .proto-banner {
-  background: #fff1c2;
-  border-bottom: 2px solid var(--brown);
+  background: #f6efe3;
+  border-bottom: 1px solid var(--border);
   padding: 0.75rem 1rem;
 }
 
 .proto-banner p {
-  max-width: 46rem;
+  max-width: 64rem;
   margin: 0 auto;
-  font-size: 1rem;
+  color: var(--text-sub);
+}
+
+.proto-banner strong {
+  color: var(--text);
 }
 
 /* 【要監修】の印 */
 .kanshu {
   display: inline-block;
-  margin-left: 0.25em;
-  padding: 0 0.3em;
+  margin-left: 0.3em;
+  padding: 0 0.4em;
   background: var(--mark-bg);
   color: var(--mark-text);
   border-radius: 4px;
+  font-family: var(--font-sans);
   font-size: 0.85em;
   font-weight: bold;
+  letter-spacing: 0;
   line-height: 1.6;
   white-space: nowrap;
+  vertical-align: 0.05em;
 }
 
 /* ---- レイアウト ---- */
 .site-header,
 main,
 .site-footer {
-  max-width: 46rem;
+  max-width: 64rem;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-.site-header {
-  padding-top: 1.5rem;
-  padding-bottom: 1rem;
+/* 本文の読みやすい行の長さ（カードの中は約40字まで） */
+.chapter,
+.toc-block {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.org-name {
-  margin: 0;
-  color: var(--brown);
-  font-weight: bold;
+h1,
+h2,
+h3 {
+  letter-spacing: 0.06em;
 }
 
 h1 {
-  margin: 0.25rem 0 0.75rem;
-  color: var(--green);
-  font-size: clamp(1.9rem, 7vw, 2.8rem);
+  margin: 0.25rem 0 1rem;
+  color: var(--primary);
+  font-size: clamp(1.75rem, 5.5vw, 2.75rem);
   line-height: 1.4;
+  letter-spacing: 0.03em;
+}
+
+/* 「ヤーコン／たんけん隊！」の切れ目でだけ折り返す */
+.nowrap {
+  white-space: nowrap;
 }
 
 h2 {
-  color: var(--green);
+  color: var(--primary);
   font-size: 1.5rem;
   line-height: 1.5;
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
 }
 
 h3 {
   font-size: 1.2rem;
-  line-height: 1.5;
-  margin: 1.75rem 0 0.5rem;
+  line-height: 1.6;
+  margin: 2rem 0 0.75rem;
 }
 
-.lead {
-  font-size: 1.15rem;
+/* ---- ヒーロー ---- */
+.site-header {
+  padding-top: 3rem;
 }
 
+.hero {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: var(--section-gap);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    padding: 2rem 0;
+  }
+}
+
+.org-name {
+  display: inline-block;
+  margin: 0;
+  padding: 0.1rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* 気持ちを伝える一文は明朝体で */
+.tagline {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.hero-actions {
+  margin: 1.75rem 0 0;
+}
+
+.hero-figure {
+  margin: 0;
+}
+
+.hero-figure .placeholder {
+  min-height: 16rem;
+}
+
+/* ---- カード（各章） ---- */
 .chapter {
   background: var(--card);
-  border: 2px solid #e2d6c5;
-  border-radius: 16px;
-  padding: 1.25rem 1rem;
-  margin: 0 0 1.5rem;
-  scroll-margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem 1.25rem;
+  margin-bottom: var(--section-gap);
+  scroll-margin-top: 1.5rem;
 }
 
 @media (min-width: 768px) {
   .chapter {
-    padding: 1.75rem 2rem;
+    padding: 2.75rem 3rem;
   }
 }
 
@@ -200,18 +294,22 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.2rem;
+  width: 2.2rem;
   height: 2.2rem;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
   border-radius: 50%;
-  background: var(--green);
-  color: #fff;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid #c9dccf;
   font-size: 1.1rem;
+  letter-spacing: 0;
   vertical-align: 0.1em;
 }
 
 .back {
-  margin: 1.5rem 0 0;
+  margin: 2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
   text-align: right;
 }
 
@@ -226,17 +324,20 @@ h3 {
 }
 
 /* ---- もくじ ---- */
+.toc-block {
+  margin-bottom: var(--section-gap);
+}
+
 .toc-title {
   font-size: 1.3rem;
-  margin-top: 1.5rem;
 }
 
 .toc {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 0;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
   list-style: none;
   counter-reset: toc;
 }
@@ -253,50 +354,71 @@ h3 {
 
 .toc a {
   width: 100%;
-  padding: 0.4rem 0.75rem;
+  min-height: 56px;
+  padding: 0.5rem 1rem;
   background: var(--card);
-  border: 2px solid var(--line);
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
   text-decoration: none;
   font-weight: bold;
 }
 
 .toc a::before {
-  content: counter(toc) ". ";
-  color: var(--brown);
+  content: counter(toc);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.75rem;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.95em;
+  letter-spacing: 0;
 }
 
 .toc a:hover {
-  border-color: var(--green);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-/* ---- ボタン ---- */
+/* ---- ボタン（CTA：テラコッタ） ---- */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 44px;
-  min-height: 48px; /* 44px 以上（N04） */
-  padding: 0.5rem 1.5rem;
-  margin-top: 0.75rem;
-  border: 2px solid var(--green-dark);
-  border-radius: 999px;
-  background: var(--green);
+  min-height: 52px; /* 44px 以上（N04） */
+  padding: 0.5rem 1.75rem;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--cta);
   color: #fff;
   font: inherit;
+  font-size: 1.1rem; /* 19.8px の太字＝「大きな文字」。白文字とのコントラスト 3:1 以上を満たす */
   font-weight: bold;
+  letter-spacing: 0.08em;
   text-decoration: none;
   cursor: pointer;
 }
 
 .button:hover {
-  background: var(--green-dark);
+  background: var(--cta-dark);
   color: #fff;
+}
+
+.button:focus-visible {
+  outline-color: var(--navy);
 }
 
 /* ---- 図版の仮枠 ---- */
 .figure {
-  margin: 1.25rem 0;
+  margin: 2rem 0;
 }
 
 .placeholder {
@@ -304,80 +426,124 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 10rem;
-  padding: 1rem;
+  min-height: 11rem;
+  padding: 1.25rem;
   background: var(--placeholder-bg);
-  border: 3px dashed var(--placeholder-line);
-  border-radius: 12px;
-  color: #1f3654;
+  border: 2px dashed var(--border-ui);
+  border-radius: var(--radius);
+  color: var(--placeholder-text);
   font-weight: bold;
   text-align: center;
 }
 
 .placeholder-small {
-  min-height: 6rem;
-  margin: 0.5rem 0 1rem;
+  min-height: 7rem;
+  margin: 0.5rem 0 1.25rem;
 }
 
 .placeholder-note {
+  margin-top: 0.25rem;
   font-weight: normal;
   font-size: 1rem;
 }
 
 /* ---- 囲み ---- */
 .steps {
-  padding-left: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  list-style: none;
+  counter-reset: step;
 }
 
 .steps li {
-  margin-bottom: 0.5rem;
+  counter-increment: step;
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 3.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 1rem;
+  top: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+.steps strong {
+  color: var(--primary);
 }
 
 .tip,
 .caution {
-  margin: 1.25rem 0;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.25rem 0.5rem;
+  border-radius: var(--radius);
 }
 
 .tip {
-  background: #eef6ea;
-  border-left: 6px solid var(--green);
+  background: var(--primary-soft);
+  border: 1px solid #d4e3d9;
 }
 
 .caution {
-  background: #fff4e5;
-  border: 2px solid var(--brown);
+  background: var(--cta-soft);
+  border: 1px solid #f2d3bf;
 }
 
 .tip-title,
 .caution-title {
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.5rem;
   font-weight: bold;
 }
 
+.tip-title {
+  color: var(--primary);
+}
+
+.caution-title {
+  color: #a8441a; /* うすいテラコッタの面の上で 4.5:1 以上にするため、CTA より濃い色 */
+}
+
 .caution ul {
-  margin: 0;
+  margin: 0 0 0.75rem;
   padding-left: 1.25rem;
+}
+
+.caution li {
+  margin-bottom: 0.25rem;
 }
 
 /* ---- クイズ ---- */
 .q-number {
   margin-top: 0.5rem;
-  color: var(--brown);
+  color: var(--primary);
 }
 
 .progress {
-  height: 10px;
-  margin: 0 0 1rem;
-  background: #ece3d6;
+  height: 8px;
+  margin: 0 0 1.5rem;
+  background: #efeae2;
   border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background: var(--green);
+  background: var(--primary);
 }
 
 .q-form fieldset {
@@ -389,7 +555,7 @@ h3 {
 
 .q-text {
   padding: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   font-size: 1.15rem;
   font-weight: bold;
 }
@@ -399,36 +565,36 @@ h3 {
   gap: 0.75rem;
 }
 
-/* 選択肢：ラベル全体を押せるようにし、44px 以上の高さにする（N04） */
+/* 選択肢：ラベル全体を押せるようにし、44px 以上の高さにする（N04）
+   [ラジオ][記号][文言] の3列。回答後のタグは文言の下に出す */
 .choice {
-  /* [ラジオ][記号][文言] の3列。回答後のタグは文言の下に出す */
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
-  gap: 0.25rem 0.6rem;
-  min-height: 56px;
-  padding: 0.5rem 0.75rem;
+  gap: 0.25rem 0.75rem;
+  min-height: 60px;
+  padding: 0.6rem 1rem;
   background: var(--card);
-  border: 2px solid var(--line);
-  border-radius: 12px;
+  border: 1px solid var(--border-ui);
+  border-radius: var(--radius);
   cursor: pointer;
 }
 
 .choice:hover {
-  border-color: var(--green);
+  border-color: var(--primary);
+  background: #fcfbf8;
 }
 
 .choice:has(input:checked:not(:disabled)) {
-  border-width: 3px;
-  border-color: var(--green);
-  background: #f3faf1;
+  border: 2px solid var(--primary);
+  background: var(--primary-soft);
 }
 
 .choice input {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.3rem;
+  height: 1.3rem;
   margin: 0;
-  accent-color: var(--green);
+  accent-color: var(--primary);
   flex: none;
 }
 
@@ -439,9 +605,11 @@ h3 {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--brown);
-  color: #fff;
+  background: var(--bg);
+  border: 1px solid var(--border-ui);
+  color: var(--text);
   font-weight: bold;
+  letter-spacing: 0;
   flex: none;
 }
 
@@ -460,36 +628,35 @@ h3 {
 }
 
 .choice.is-correct {
-  border: 3px solid var(--green);
-  background: var(--ok-bg);
+  border: 2px solid var(--primary);
+  background: var(--primary-soft);
 }
 
 .choice.is-chosen {
-  border: 3px dashed var(--brown);
-  background: var(--ng-bg);
+  border: 2px dashed var(--cta-dark);
+  background: var(--cta-soft);
 }
 
 .tag {
-  padding: 0 0.5rem;
-  white-space: nowrap;
-  border-radius: 6px;
+  padding: 0 0.6rem;
+  border-radius: 4px;
   font-size: 1rem;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .tag-correct {
-  background: var(--green);
+  background: var(--primary);
   color: #fff;
 }
 
 .tag-chosen {
-  background: var(--brown);
+  background: var(--cta-dark);
   color: #fff;
 }
 
 .q-error {
-  min-height: 0;
-  margin: 0.5rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--mark-text);
   font-weight: bold;
 }
@@ -499,37 +666,55 @@ h3 {
 }
 
 .feedback {
-  margin-top: 1.25rem;
-  padding: 1rem;
-  border-radius: 12px;
+  margin-top: 1.75rem;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
 }
 
 .feedback-ok {
-  background: var(--ok-bg);
-  border: 3px solid var(--green);
+  border: 1px solid #c9dccf;
+  border-top: 6px solid var(--primary);
 }
 
 .feedback-ng {
-  background: var(--ng-bg);
-  border: 3px solid var(--brown);
+  border: 1px solid #f2d3bf;
+  border-top: 6px solid var(--cta-dark);
 }
 
 .feedback-title {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
   font-size: 1.3rem;
   font-weight: bold;
 }
 
+.feedback-ok .feedback-title {
+  color: var(--primary);
+}
+
+.feedback-ng .feedback-title {
+  color: var(--cta-dark);
+}
+
 .result-score {
-  font-size: 1.3rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
   font-weight: bold;
+  color: var(--primary);
+}
+
+.review-list {
+  padding-left: 1.25rem;
 }
 
 /* ---- JavaScript が動かないときの代替表示 ---- */
 .noscript-note {
   padding: 0.75rem 1rem;
-  background: #f4efe7;
-  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-sub);
 }
 
 .static-list {
@@ -538,8 +723,8 @@ h3 {
 }
 
 .static-q {
-  padding: 0.5rem 0 1rem;
-  border-bottom: 2px dashed #d8cbb8;
+  padding: 0.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .static-choices {
@@ -556,26 +741,35 @@ h3 {
 }
 
 .static-answer {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
 }
 
 .static-answer summary {
   display: inline-flex;
   align-items: center;
   min-height: 48px;
-  padding: 0.25rem 1rem;
-  border: 2px solid var(--green);
-  border-radius: 999px;
-  color: var(--green-dark);
+  padding: 0.25rem 1.25rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--primary);
   font-weight: bold;
   cursor: pointer;
 }
 
+.static-answer[open] summary {
+  margin-bottom: 0.75rem;
+}
+
 /* ---- おうちの方と先生へ ---- */
+.adults {
+  background: #fdfcf9;
+}
+
 .adults h3 {
-  color: var(--green-dark);
-  border-bottom: 2px solid #e2d6c5;
-  padding-bottom: 0.25rem;
+  color: var(--navy);
+  padding-left: 0.75rem;
+  border-left: 4px solid var(--navy);
 }
 
 .table-wrap {
@@ -584,27 +778,27 @@ h3 {
 
 .credits {
   width: 100%;
-  min-width: 0;
   border-collapse: collapse;
   font-size: 1rem;
+  background: var(--card);
 }
 
 .credits caption {
   text-align: left;
   font-weight: bold;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
 }
 
 .credits th,
 .credits td {
-  padding: 0.5rem;
-  border: 1px solid var(--line);
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
 }
 
 .credits thead th {
-  background: #f4efe7;
+  background: var(--bg);
 }
 
 /* 狭い画面では、表を縦積みにする（N01） */
@@ -625,7 +819,8 @@ h3 {
 
   .credits tr {
     margin-bottom: 0.75rem;
-    border: 1px solid var(--line);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
   }
 
   .credits th,
@@ -635,7 +830,7 @@ h3 {
 
   .credits td::before {
     display: block;
-    color: var(--muted);
+    color: var(--text-sub);
     font-size: 1rem;
     font-weight: bold;
   }
@@ -655,16 +850,17 @@ h3 {
 
 /* ---- フッター ---- */
 .site-footer {
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-  color: var(--muted);
-  font-size: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-sub);
 }
 
 .footer-credit {
-  padding: 0.5rem 0.75rem;
-  border: 2px dashed var(--line);
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--border-ui);
+  border-radius: var(--radius-sm);
+  background: var(--card);
 }
 
 /* 動きを減らす設定のときは、変化のアニメーションを止める（N09） */
